@@ -25,10 +25,9 @@
       <v-row>
         <v-col cols="12" sm="6" md="4">
           <v-menu
-            ref="menu"
-            v-model="menu"
+            v-model="menuDate"
             :close-on-content-click="false"
-            :return-value.sync="date"
+            :nudge-right="40"
             transition="scale-transition"
             offset-y
             min-width="290px"
@@ -36,18 +35,15 @@
             <template v-slot:activator="{ on }">
               <v-text-field
                 v-model="date"
-                label="Tanggal Kuis"
+                label="Tanggal Mulai Kuis"
                 readonly
                 v-on="on"
               ></v-text-field>
             </template>
-            <v-date-picker v-model="date" no-title scrollable>
-              <div class="flex-grow-1"></div>
-              <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-              <v-btn text color="primary" @click="$refs.menu.save(date)"
-                >OK</v-btn
-              >
-            </v-date-picker>
+            <v-date-picker
+              v-model="date"
+              @input="menuDate = false"
+            ></v-date-picker>
           </v-menu>
         </v-col>
       </v-row>
@@ -58,10 +54,10 @@
           <v-col cols="12" sm="6" md="4">
             <v-menu
               ref="menu"
-              v-model="menu2"
+              v-model="timeStart"
               :close-on-content-click="false"
               :nudge-right="40"
-              :return-value.sync="start"
+              :return-value.sync="time"
               transition="scale-transition"
               offset-y
               max-width="290px"
@@ -76,36 +72,9 @@
                 ></v-text-field>
               </template>
               <v-time-picker
-                v-model="start"
-                :max="end"
-                no-title
+                v-if="timeStart"
+                v-model="time"
                 @click:minute="$refs.menu.save(time)"
-              ></v-time-picker>
-            </v-menu>
-          </v-col>
-          <v-col cols="12" sm="6" md="4">
-            <v-menu
-              ref="menu"
-              v-model="menu3"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              :return-value.sync="time"
-              transition="scale-transition"
-              offset-y
-              max-width="290px"
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on }">
-                <v-text-field
-                  label="Waktu Selesai"
-                  readonly
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-time-picker
-                v-model="end"
-                :min="start"
-                no-title
               ></v-time-picker>
             </v-menu>
           </v-col>
@@ -145,12 +114,12 @@ export default {
     date: new Date().toISOString().substr(0, 10),
     menu: false,
     modal: false,
-    menu2: false,
+    menuDate: false,
 
     // timepicker
     time: null,
-    start: null,
-    end: null,
+    timeStart: false,
+    timeEnd: false,
 
     valid: true,
     name: '',
