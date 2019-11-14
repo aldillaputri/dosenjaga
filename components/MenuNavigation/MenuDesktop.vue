@@ -5,12 +5,10 @@
         <v-img src="/user.png" />
       </v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-title class="subtitle-1 font-weight-bold">
-          Bahrul Amaruddin
-        </v-list-item-title>
-        <v-list-item-subtitle>
-          Dosen
-        </v-list-item-subtitle>
+        <v-list-item-title class="subtitle-1 font-weight-bold"
+          >Bahrul Amaruddin</v-list-item-title
+        >
+        <v-list-item-subtitle>Dosen</v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
     <v-list-item>
@@ -47,7 +45,8 @@ export default {
     return {
       menus: [
         { icon: 'mdi-home-outline', text: 'Beranda' },
-        { icon: 'mdi-book-outline', text: 'Quiz Online' }
+        { icon: 'mdi-book-outline', text: 'Quiz Online' },
+        { icon: 'mdi-question', text: 'Bank Soal' }
       ]
     }
   }

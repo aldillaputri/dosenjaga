@@ -19,19 +19,23 @@
     <menu-mobile class="hidden-md-and-up" />
     <v-content>
       <v-container>
-        <quiz-home />
+        <!-- <quiz-home /> -->
         <!-- <add /> -->
+        <!-- <multiple-create /> -->
+        <essay-generator />
       </v-container>
     </v-content>
   </v-app>
 </template>
 <script>
-import QuizHome from '~/components/QuizDosen/QuizHome.vue'
-//  import Add from '~/components/QuizDosen/add.vue'
+// import MultipleCreate from '~/components/BankSoal/MultipleCreate.vue'
+import EssayGenerator from '~/components/BankSoal/EssayGenerator.vue'
 export default {
   components: {
-    QuizHome
-    //  Add
+    // QuizHome
+    // Add
+    EssayGenerator
+    // MultipleCreate
   },
   data() {
     return {

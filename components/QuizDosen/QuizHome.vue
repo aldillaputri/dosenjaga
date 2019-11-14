@@ -79,6 +79,134 @@
             </v-menu>
           </v-col>
         </v-row>
+        <v-row>
+          <v-col cols="12" sm="6" md="4">
+            <v-menu
+              ref="menu1"
+              v-model="timeEnd"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="time1"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="time1"
+                  label="Waktu Selesai"
+                  readonly
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-time-picker
+                v-if="timeEnd"
+                v-model="time1"
+                @click:minute="$refs.menu1.save(time1)"
+              ></v-time-picker>
+            </v-menu>
+          </v-col>
+        </v-row>
+
+        <!-- expansion panel -->
+        <v-expansion-panels>
+          <v-expansion-panel>
+            <v-expansion-panel-header>
+              <template v-slot:default="{ open }">
+                <v-row no-gutters>
+                  <v-col cols="4">Soal</v-col>
+                  <v-col cols="8" class="text--secondary">
+                    <v-fade-transition leave-absolute>
+                      <span v-if="open" key="0">
+                        Ketikkan Soal Disini
+                      </span>
+                      <span v-else key="1">
+                        {{ soal.name }}
+                      </span>
+                    </v-fade-transition>
+                  </v-col>
+                </v-row>
+              </template>
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-row>
+                <v-col>
+                  <v-text-field
+                    v-model="soal.name"
+                    label="Pertanyaan"
+                  ></v-text-field>
+                </v-col>
+                <v-divider vertical class="mx-4"></v-divider>
+                <v-col cols="3">
+                  <v-text-field label="Poin"></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-text-field label="Jawaban"></v-text-field>
+                </v-col>
+                <v-divider vertical class="mx-4"></v-divider>
+                <v-col cols="3">
+                  <v-checkbox
+                    v-model="includeFiles"
+                    label="Jawaban Benar"
+                    hide-details
+                    class="shrink mr-2 mt-0"
+                  ></v-checkbox>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-text-field label="Jawaban"></v-text-field>
+                </v-col>
+                <v-divider vertical class="mx-4"></v-divider>
+                <v-col cols="3">
+                  <v-checkbox
+                    v-model="includeFiles"
+                    label="Jawaban Benar"
+                    hide-details
+                    class="shrink mr-2 mt-0"
+                  ></v-checkbox>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-text-field label="Jawaban"></v-text-field>
+                </v-col>
+                <v-divider vertical class="mx-4"></v-divider>
+                <v-col cols="3">
+                  <v-checkbox
+                    v-model="includeFiles"
+                    label="Jawaban Benar"
+                    hide-details
+                    class="shrink mr-2 mt-0"
+                  ></v-checkbox>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-text-field label="Jawaban"></v-text-field>
+                </v-col>
+                <v-divider vertical class="mx-4"></v-divider>
+                <v-col cols="3">
+                  <v-checkbox
+                    v-model="includeFiles"
+                    label="Jawaban Benar"
+                    hide-details
+                    class="shrink mr-2 mt-0"
+                  ></v-checkbox>
+                </v-col>
+              </v-row>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn text color="error">
+                  Hapus Soal
+                </v-btn>
+              </v-card-actions>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </template>
 
       <!--     
@@ -112,15 +240,18 @@ export default {
   data: () => ({
     // datepicker
     date: new Date().toISOString().substr(0, 10),
-    menu: false,
     modal: false,
     menuDate: false,
 
     // timepicker
+    menu: false,
+    menu1: false,
     time: null,
+    time1: null,
     timeStart: false,
     timeEnd: false,
 
+    // text fields
     valid: true,
     name: '',
     nameRules: [
@@ -134,7 +265,24 @@ export default {
     ],
     select: null,
     items: ['Item 1', 'Item 2', 'Item 3', 'Item 4'],
-    checkbox: false
+    checkbox: false,
+
+    // expansion panels
+    dateexp: null,
+    soal: {
+      name: '',
+      location: null,
+      start: null,
+      end: null
+    },
+    locations: [
+      'Australia',
+      'Barbados',
+      'Chile',
+      'Denmark',
+      'Equador',
+      'France'
+    ]
   }),
 
   methods: {
