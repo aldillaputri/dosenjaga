@@ -19,7 +19,12 @@
     <v-divider />
     <v-list nav dense>
       <v-list-item-group color="primary">
-        <v-list-item v-for="(menu, i) in menus" :key="i">
+        <v-list-item
+          v-for="(menu, i) in menus"
+          :key="i"
+          v-model="menu.active"
+          :to="menu.link"
+        >
           <v-list-item-icon>
             <v-icon v-text="menu.icon" />
           </v-list-item-icon>
@@ -27,6 +32,7 @@
             <v-list-item-title class="body-2" v-text="menu.text" />
           </v-list-item-content>
         </v-list-item>
+
         <v-list-item>
           <v-list-item-action>
             <v-icon>mdi-logout-variant mdi-rotate-180</v-icon>
@@ -44,9 +50,14 @@ export default {
   data() {
     return {
       menus: [
-        { icon: 'mdi-home-outline', text: 'Beranda' },
-        { icon: 'mdi-book-outline', text: 'Quiz Online' },
-        { icon: 'mdi-question', text: 'Bank Soal' }
+        { icon: 'mdi-home-outline', text: 'Beranda', link: '/beranda' },
+        { icon: 'mdi-book-outline', text: 'Quiz Online', link: 'quiz' },
+        {
+          icon: 'mdi-comment-question-outline',
+          text: 'Bank Soal',
+          link: 'banksoal',
+          menu: [{ text: 'Multiple Choice', link: 'banksoal' }]
+        }
       ]
     }
   }

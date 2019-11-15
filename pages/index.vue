@@ -1,5 +1,7 @@
 <template>
-  <v-container></v-container>
+  <!-- <v-container> -->
+  <h1>Beranda</h1>
+  <!-- </v-container> -->
 </template>
 
 <script>

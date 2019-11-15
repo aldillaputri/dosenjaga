@@ -19,24 +19,14 @@
     <menu-mobile class="hidden-md-and-up" />
     <v-content>
       <v-container>
-        <!-- <quiz-home /> -->
-        <!-- <add /> -->
-        <!-- <multiple-create /> -->
-        <essay-generator />
+        <nuxt />
       </v-container>
     </v-content>
   </v-app>
 </template>
 <script>
-// import MultipleCreate from '~/components/BankSoal/MultipleCreate.vue'
-import EssayGenerator from '~/components/BankSoal/EssayGenerator.vue'
 export default {
-  components: {
-    // QuizHome
-    // Add
-    EssayGenerator
-    // MultipleCreate
-  },
+  components: {},
   data() {
     return {
       miniVariant: false
