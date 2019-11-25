@@ -71,7 +71,7 @@
       <v-container>
         <v-col>
           <v-btn class="mt-4" color="primary" @click="addQuestion"
-            >Add Question</v-btn
+            >Tambah Soal</v-btn
           >
         </v-col>
         <v-card-actions>

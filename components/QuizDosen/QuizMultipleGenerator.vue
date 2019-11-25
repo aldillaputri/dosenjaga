@@ -1,19 +1,101 @@
 <template>
   <v-card class="pa-5">
     <v-form ref="form" v-model="valid" lazy-validation>
-      <div><v-icon>mdi-comment-question-outline</v-icon>Bank Soal</div>
+      <div><v-icon>mdi-forum</v-icon>Buat Kuis</div>
 
-      <!-- Mata Kuliah -->
-      <v-col>
-        <v-overflow-btn
-          class="my-2"
-          :items="dropdown_edit"
-          label="Mata Kuliah"
-          editable
-          item-value="text"
-        ></v-overflow-btn>
-      </v-col>
+      <v-text-field
+        v-model="judul"
+        :rules="judulRules"
+        label="Judul Kuis"
+        required
+      ></v-text-field>
 
+      <!--datepicker-->
+      <v-row>
+        <v-col cols="12" sm="6" md="4">
+          <v-menu
+            v-model="menuDate"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            transition="scale-transition"
+            offset-y
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on }">
+              <v-text-field
+                v-model="date"
+                label="Tanggal Mulai Kuis"
+                readonly
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="date"
+              @input="menuDate = false"
+            ></v-date-picker>
+          </v-menu>
+        </v-col>
+      </v-row>
+
+      <!-- timepicker -->
+      <template>
+        <v-row>
+          <v-col cols="12" sm="6" md="4">
+            <v-menu
+              ref="menu"
+              v-model="timeStart"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="time"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="time"
+                  label="Waktu Mulai"
+                  readonly
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-time-picker
+                v-if="timeStart"
+                v-model="time"
+                @click:minute="$refs.menu.save(time)"
+              ></v-time-picker>
+            </v-menu>
+          </v-col>
+          <v-col cols="12" sm="6" md="4">
+            <v-menu
+              ref="menu1"
+              v-model="timeEnd"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="time1"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="time1"
+                  label="Waktu Selesai"
+                  readonly
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-time-picker
+                v-if="timeEnd"
+                v-model="time1"
+                @click:minute="$refs.menu1.save(time1)"
+              ></v-time-picker>
+            </v-menu>
+          </v-col>
+        </v-row>
+      </template>
       <!-- expansion panel -->
       <div v-for="(line, index) in lines" :key="index" class="row">
         <template>
@@ -135,11 +217,11 @@
           >
         </v-col>
         <v-card-actions>
-          <b>Total Points:</b>
+          <b>Total Point: {{ totalPoints }}</b>
           <v-spacer></v-spacer>
-          <v-btn color="error" to="/">Cancel</v-btn>
+          <v-btn color="error" to="/">Batal</v-btn>
           <v-btn color="normal" @click="reset">Reset</v-btn>
-          <v-btn color="success" @click="validate">Create</v-btn>
+          <v-btn color="success" @click="validate">Buat</v-btn>
         </v-card-actions>
       </v-container>
     </v-form>
@@ -148,6 +230,35 @@
 <script>
 export default {
   data: () => ({
+    // datepicker
+    date: new Date().toISOString().substr(0, 10),
+    modal: false,
+    menuDate: false,
+
+    // timepicker
+    menu: false,
+    menu1: false,
+    time: null,
+    time1: null,
+    timeStart: false,
+    timeEnd: false,
+
+    // text fields
+    valid: true,
+    name: '',
+    nameRules: [
+      (v) => !!v || 'Name is required',
+      (v) => (v && v.length <= 10) || 'Name must be less than 10 characters'
+    ],
+    email: '',
+    emailRules: [
+      (v) => !!v || 'E-mail is required',
+      (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+    ],
+    select: null,
+    items: ['Item 1', 'Item 2', 'Item 3', 'Item 4'],
+    checkbox: false,
+
     // expansion panels
     lines: [
       {
@@ -163,22 +274,7 @@ export default {
         checkbox4: ''
       }
     ],
-    dropdown_edit: [
-      { text: 'Keamanan Jaringan' },
-      { text: 'Basis Data' },
-      { text: 'Pemrograman Framework' },
-      { text: 'Agama' },
-      { text: 'Bahasa Inggris' },
-      { text: 'Pendidikan Kewarganegaraan' },
-      { text: 'Metodologi Riset' }
-    ],
-    blockRemoval: true,
-    watch: {
-      lines() {
-        this.blockRemoval = this.lines.length <= 1
-      }
-    },
-    totalPoints() {}
+    blockRemoval: true
   }),
 
   methods: {
