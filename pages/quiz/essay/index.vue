@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import CreateQuizEssay from '~/components/QuizDosen/QuizEssayGenerator.vue'
+import CreateQuizEssay from '~/components/QuizDosen/EssayGenerator.vue'
 import InsertBankSoal from '~/components/QuizDosen/InsertBankSoal.vue'
 export default {
   components: {

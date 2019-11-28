@@ -1,5 +1,5 @@
 <template>
-  <v-card max-width="400" class="mx-auto" outlined>
+  <v-row>
     <v-overflow-btn
       class="my-2"
       :items="dropdown_edit"
@@ -10,7 +10,7 @@
 
     <v-row dense>
       <v-col v-for="(item, i) in items" :key="i" cols="12">
-        <v-card>
+        <v-card outlined>
           <div class="d-flex flex-no-wrap justify-space-between">
             <div>
               <v-card-title
@@ -26,7 +26,7 @@
         </v-card>
       </v-col>
     </v-row>
-  </v-card>
+  </v-row>
 </template>
 
 <script>

@@ -67,9 +67,9 @@ export default {
           action: 'mdi-forum',
           title: 'Kuis Online',
           items: [
-            { title: 'Daftar Kuis', link: '/quiz/daftar' },
-            { title: 'Pilihan Ganda', link: '/quiz/pilihanganda' },
-            { title: 'Essay', link: '/quiz/essay' }
+            { title: 'Data Kuis', link: '/quiz/daftar' },
+            { title: 'Buat Kuis', link: '/quiz/pilihanganda' }
+            // { title: 'Essay', link: '/quiz/essay' }
           ]
         },
         {

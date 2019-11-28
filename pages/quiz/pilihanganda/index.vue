@@ -1,22 +1,26 @@
 <template>
-  <v-container class="grey lighten-5">
-    <v-row no-gutters>
-      <v-col>
+  <v-card class="pa-5">
+    <v-row>
+      <v-col cols="7" class="pa-5">
+        <quiz-description></quiz-description>
         <create-quiz></create-quiz>
       </v-col>
-      <v-col>
+      <v-divider vertical></v-divider>
+      <v-col cols="4" class="pa-10">
         <insert-bank-soal></insert-bank-soal>
       </v-col>
     </v-row>
-  </v-container>
+  </v-card>
 </template>
 
 <script>
-import CreateQuiz from '~/components/QuizDosen/QuizMultipleGenerator.vue'
+import CreateQuiz from '~/components/QuizDosen/MultipleGenerator.vue'
+import QuizDescription from '~/components/QuizDosen/QuizDescription.vue'
 import InsertBankSoal from '~/components/QuizDosen/InsertBankSoal.vue'
 export default {
   components: {
     CreateQuiz,
+    QuizDescription,
     InsertBankSoal
   }
 }
