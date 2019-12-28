@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col v-for="card in cards" :key="card.title" :cols="card.flex">
-      <v-card>
+      <v-card outlined>
         <v-card-title class="subtitle-1" v-text="card.title"></v-card-title>
         <v-card-text v-text="card.subtitle"></v-card-text>
         <v-card-actions>

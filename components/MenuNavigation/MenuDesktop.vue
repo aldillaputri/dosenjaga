@@ -76,7 +76,7 @@ export default {
           action: 'mdi-forum',
           title: 'Kuis Online (Mhs)',
           items: [
-            { title: 'Join Kuis', link: '/quiz-mahasiswa/enrolled' },
+            { title: 'Data Kuis', link: '/quiz-mahasiswa/data' },
             { title: 'History Kuis', link: '/quiz-mahasiswa/history' }
           ]
         },

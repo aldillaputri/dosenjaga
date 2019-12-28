@@ -3,7 +3,7 @@
     <!-- expansion panel -->
     <div v-for="(line, index) in lines" :key="index" class="row">
       <template>
-        <v-expansion-panels>
+        <v-expansion-panels class="ma-3">
           <v-expansion-panel>
             <v-expansion-panel-header>
               <template v-slot:default="{ open }">
@@ -110,21 +110,24 @@
         </v-expansion-panels>
       </template>
     </div>
+    <v-col>
+      <v-icon>mdi-chevron-double-down</v-icon>&nbsp;Soal Berikutnya
+      <v-radio-group v-model="row" row>
+        <v-radio label="Pilihan Ganda" value="radio-1"></v-radio>
+        <v-radio label="Isian Singkat" value="radio-2"></v-radio>
+      </v-radio-group>
+      <v-btn outlined color="indigo" small @click="addQuestion"
+        >Tambah Soal</v-btn
+      >
+    </v-col>
 
-    <v-container>
-      <v-col>
-        <v-btn class="mt-4" color="primary" @click="addQuestion"
-          >Tambah Soal</v-btn
-        >
-      </v-col>
-      <v-card-actions>
-        <b>Total Point: {{ totalPoints }}</b>
-        <v-spacer></v-spacer>
-        <v-btn color="error" to="/">Batal</v-btn>
-        <v-btn color="normal" @click="reset">Reset</v-btn>
-        <v-btn color="success" @click="validate">Buat</v-btn>
-      </v-card-actions>
-    </v-container>
+    <v-card-actions>
+      <b>Total Point: {{ totalPoints }}</b>
+      <v-spacer></v-spacer>
+      <v-btn color="error" to="/">Batal</v-btn>
+      <v-btn color="normal" @click="reset">Reset</v-btn>
+      <v-btn color="success" @click="validate">Buat</v-btn>
+    </v-card-actions>
   </v-form>
 </template>
 <script>

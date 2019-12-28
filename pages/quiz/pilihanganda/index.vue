@@ -5,8 +5,8 @@
         <quiz-description></quiz-description>
         <create-quiz></create-quiz>
       </v-col>
-      <v-divider vertical></v-divider>
-      <v-col cols="4" class="pa-10">
+      <v-divider vertical class="ma-10"></v-divider>
+      <v-col cols="4">
         <insert-bank-soal></insert-bank-soal>
       </v-col>
     </v-row>

@@ -1,5 +1,8 @@
 <template>
   <v-row>
+    <div class="ma-5">
+      <v-icon>mdi-plus-circle</v-icon>&nbsp;Tambah Dari Bank Soal
+    </div>
     <v-overflow-btn
       class="my-2"
       :items="dropdown_edit"

@@ -38,6 +38,7 @@
                     <v-text-field
                       v-model="line.soal"
                       label="Pertanyaan"
+                      :rules="[(v) => !!v || 'Pertanyaan harus diisi']"
                     ></v-text-field>
                   </v-col>
                   <v-divider vertical class="mx-4"></v-divider>
@@ -45,6 +46,7 @@
                     <v-text-field
                       v-model="line.poin"
                       label="Poin"
+                      :rules="[(v) => !!v || 'Poin harus diisi']"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -53,6 +55,7 @@
                     <v-text-field
                       v-model="line.jawaban1"
                       label="Jawaban"
+                      :rules="[(v) => !!v || 'Jawaban harus diisi']"
                     ></v-text-field>
                   </v-col>
                   <v-divider vertical class="mx-4"></v-divider>
@@ -139,7 +142,7 @@
           <v-spacer></v-spacer>
           <v-btn color="error" to="/">Cancel</v-btn>
           <v-btn color="normal" @click="reset">Reset</v-btn>
-          <v-btn color="success" @click="validate">Create</v-btn>
+          <v-btn color="success" @click="submit()">Create</v-btn>
         </v-card-actions>
       </v-container>
     </v-form>
@@ -182,9 +185,9 @@ export default {
   }),
 
   methods: {
-    validate() {
+    submit() {
       if (this.$refs.form.validate()) {
-        this.snackbar = true
+        this.$store.dispatch('')
       }
     },
     reset() {
