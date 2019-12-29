@@ -22,7 +22,7 @@
         <v-card-text v-text="card.subtitle"></v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn icon>
+          <v-btn icon :to="link">
             <v-icon>mdi-eye</v-icon>
           </v-btn>
           <v-btn icon>
@@ -39,6 +39,7 @@
 <script>
 export default {
   data: () => ({
+    link: '/banksoal/view',
     dropdown_edit: [
       { text: 'Keamanan Jaringan' },
       { text: 'Basis Data' },

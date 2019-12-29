@@ -7,7 +7,7 @@
     :to="link"
     @click="loader = 'loading4'"
   >
-    <v-icon left dark>mdi-pencil</v-icon>Buat Kuis
+    <v-icon left dark>mdi-backup-restore</v-icon>Kembali
   </v-btn>
 </template>
 <style>
@@ -52,7 +52,7 @@
 export default {
   data() {
     return {
-      link: '/quiz/pilihanganda',
+      link: '/quiz/daftar',
       loader: null,
       loading: false,
       loading2: false,

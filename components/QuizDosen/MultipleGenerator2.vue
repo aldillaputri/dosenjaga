@@ -1,8 +1,7 @@
 <template>
-  <v-form id="form-tambah-soal" ref="form" lazy-validation>
-    <v-div id=""></v-div>
+  <v-form ref="form" lazy-validation>
     <!-- expansion panel -->
-    <!-- <div v-for="(line, index) in lines" :key="index" class="row">
+    <div v-for="(line, index) in lines" :key="index" class="row">
       <template>
         <v-expansion-panels class="ma-3">
           <v-expansion-panel>
@@ -111,8 +110,8 @@
         </v-expansion-panels>
       </template>
     </div>
-    <v-icon>mdi-chevron-double-down</v-icon>&nbsp;Soal Berikutnya-->
     <v-col>
+      <v-icon>mdi-chevron-double-down</v-icon>&nbsp;Soal Berikutnya
       <v-radio-group v-model="radio_grup" row>
         <v-radio
           label="Pilihan Ganda"

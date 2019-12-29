@@ -2,12 +2,7 @@
   <v-form ref="form" v-model="valid" lazy-validation>
     <div><v-icon>mdi-forum</v-icon>&nbsp;Deskripsi Kuis</div>
 
-    <v-text-field
-      v-model="judul"
-      :rules="judulRules"
-      label="Judul Kuis"
-      required
-    ></v-text-field>
+    <v-text-field label="Judul Kuis" required></v-text-field>
 
     <!--datepicker-->
     <v-row>

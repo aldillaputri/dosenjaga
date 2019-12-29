@@ -6,7 +6,7 @@
         <v-card-text v-text="card.subtitle"></v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn icon>
+          <v-btn icon :to="link">
             <v-icon color="info">mdi-eye</v-icon>
           </v-btn>
           <v-btn icon color="secondary">
@@ -20,6 +20,7 @@
 <script>
 export default {
   data: () => ({
+    link: '/quiz/view',
     cards: [
       {
         title: 'Kuis Bab Proxy Auth',

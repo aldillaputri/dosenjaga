@@ -68,8 +68,8 @@ export default {
           title: 'Kuis Online',
           items: [
             { title: 'Data Kuis', link: '/quiz/daftar' },
-            { title: 'Buat Kuis', link: '/quiz/pilihanganda' }
-            // { title: 'Essay', link: '/quiz/essay' }
+            { title: 'Buat Kuis', link: '/quiz/pilihanganda' },
+            { title: 'Buat Kuis Test', link: '/quiz/buatkuis' }
           ]
         },
         {
