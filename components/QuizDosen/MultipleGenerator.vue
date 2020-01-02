@@ -1,14 +1,16 @@
 <template>
   <v-form id="form-tambah-soal" ref="form" lazy-validation>
-    <v-div id=""></v-div>
+    <v-div id></v-div>
     <!-- expansion panel -->
-    <!-- <div v-for="(line, index) in lines" :key="index" class="row">
+    <div v-for="(line, index) in lines" :key="index" class="row">
+      <!-- <h1 v-if="line.type == 'pilgan'">PILGAN</h1>
+      <h1 v-else>ESSAY</h1>-->
       <template>
         <v-expansion-panels class="ma-3">
           <v-expansion-panel>
             <v-expansion-panel-header>
               <template v-slot:default="{ open }">
-                <v-row no-gutters>
+                <v-row v-if="line.type == 'pilgan' || 'essay'" no-gutters>
                   <v-col cols="4">Soal</v-col>
                   <v-col cols="8" class="text--secondary">
                     <v-fade-transition leave-absolute>
@@ -23,18 +25,24 @@
               <v-row id="row-">
                 <v-col>
                   <v-text-field
+                    v-if="line.type == 'pilgan' || 'essay'"
                     v-model="line.soal"
                     label="Pertanyaan"
                   ></v-text-field>
                 </v-col>
                 <v-divider vertical class="mx-4"></v-divider>
                 <v-col cols="3">
-                  <v-text-field v-model="line.poin" label="Poin"></v-text-field>
+                  <v-text-field
+                    v-if="line.type == 'pilgan' || 'essay'"
+                    v-model="line.poin"
+                    label="Poin"
+                  ></v-text-field>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col>
                   <v-text-field
+                    v-if="line.type == 'pilgan' || 'essay'"
                     v-model="line.jawaban1"
                     label="Jawaban"
                   ></v-text-field>
@@ -42,6 +50,7 @@
                 <v-divider vertical class="mx-4"></v-divider>
                 <v-col cols="3">
                   <v-checkbox
+                    v-if="line.type == 'pilgan'"
                     v-model="line.checkbox1"
                     label="Jawaban Benar"
                     hide-details
@@ -52,6 +61,7 @@
               <v-row>
                 <v-col>
                   <v-text-field
+                    v-if="line.type == 'pilgan'"
                     v-model="line.jawaban2"
                     label="Jawaban"
                   ></v-text-field>
@@ -59,6 +69,7 @@
                 <v-divider vertical class="mx-4"></v-divider>
                 <v-col cols="3">
                   <v-checkbox
+                    v-if="line.type == 'pilgan'"
                     v-model="line.checkbox2"
                     label="Jawaban Benar"
                     hide-details
@@ -69,6 +80,7 @@
               <v-row>
                 <v-col>
                   <v-text-field
+                    v-if="line.type == 'pilgan'"
                     v-model="line.jawaban3"
                     label="Jawaban"
                   ></v-text-field>
@@ -76,6 +88,7 @@
                 <v-divider vertical class="mx-4"></v-divider>
                 <v-col cols="3">
                   <v-checkbox
+                    v-if="line.type == 'pilgan'"
                     v-model="line.checkbox3"
                     label="Jawaban Benar"
                     hide-details
@@ -86,6 +99,7 @@
               <v-row>
                 <v-col>
                   <v-text-field
+                    v-if="line.type == 'pilgan'"
                     v-model="line.jawaban4"
                     label="Jawaban"
                   ></v-text-field>
@@ -93,6 +107,7 @@
                 <v-divider vertical class="mx-4"></v-divider>
                 <v-col cols="3">
                   <v-checkbox
+                    v-if="line.type == 'pilgan'"
                     v-model="line.checkbox4"
                     label="Jawaban Benar"
                     hide-details
@@ -111,7 +126,7 @@
         </v-expansion-panels>
       </template>
     </div>
-    <v-icon>mdi-chevron-double-down</v-icon>&nbsp;Soal Berikutnya-->
+    <v-icon>mdi-chevron-double-down</v-icon>&nbsp;Soal Berikutnya
     <v-col>
       <v-radio-group v-model="radio_grup" row>
         <v-radio
@@ -141,7 +156,6 @@
 </template>
 
 <script>
-// this.radio1 = 'radio1111'
 export default {
   data: () => ({
     checkbox: false,
@@ -150,6 +164,7 @@ export default {
     // expansion panels
     lines: [
       {
+        type: '',
         soal: '',
         poin: '',
         jawaban1: '',
@@ -162,11 +177,11 @@ export default {
         checkbox4: ''
       }
     ],
-    lines_essay: [
-      {
-        soal: 'tes soal'
-      }
-    ],
+    // lines_essay: [
+    //   {
+    //     soal: 'tes soal'
+    //   }
+    // ],
     blockRemoval: true
   }),
 
@@ -191,30 +206,21 @@ export default {
     },
     addQuestion() {
       const checkEmptyLines = this.lines.filter((line) => line.number === null)
-      // console.log(checkEmptyLines.length >= 0)
-      // console.log(this.lines.length > 0)
-      // console.log(this.radio1)
       if (
         checkEmptyLines.length >= 0 &&
         this.lines.length > 0 &&
         this.radio1 === 'pilgan'
       ) {
-        // console.log('pilgan clikced')
-        this.lines.push() // yang ini (1)
+        this.lines.push({
+          type: 'pilgan'
+        })
       } else if (
         checkEmptyLines.length >= 0 &&
         this.lines.length > 0 &&
         this.radio1 === 'essay'
       ) {
-        // console.log('essay clikced')
-        // this.lines[0] = this.lines_essay[0]
-        // console.log(this.lines[0])
-        const aa = this.lines.length - 1
-        delete this.lines[aa].soal
         this.lines.push({
-          // yang ini (2)
-          // soal: this.lines[0].soal
-          soal: 'asdasdasdasdasdasdasd'
+          type: 'essay'
         })
       }
     },

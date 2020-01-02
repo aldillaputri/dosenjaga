@@ -16,19 +16,19 @@
         <v-radio label="Essay" value="radio-2"></v-radio>
       </v-radio-group>
     </v-col>
-    <v-col v-for="card in cards" :key="card.title" :cols="card.flex">
-      <v-card>
-        <v-card-title class="subtitle-1" v-text="card.title"></v-card-title>
+    <v-col v-for="card in cards" :key="card.matkul" :cols="3">
+      <v-card outlined>
+        <v-card-title class="subtitle-1" v-text="card.matkul"></v-card-title>
         <v-card-text v-text="card.subtitle"></v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn icon :to="link">
-            <v-icon>mdi-eye</v-icon>
+          <v-btn icon :to="link + '?matakuliah=' + card._id">
+            <v-icon color="info">mdi-eye</v-icon>
           </v-btn>
-          <v-btn icon>
-            <v-icon>mdi-plus-circle</v-icon>
+          <v-btn icon color="secondary">
+            <v-icon>mdi-pencil</v-icon>
           </v-btn>
-          <v-btn icon>
+          <v-btn icon color="error">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </v-card-actions>
@@ -37,6 +37,7 @@
   </v-row>
 </template>
 <script>
+import axios from 'axios'
 export default {
   data: () => ({
     link: '/banksoal/view',
@@ -50,27 +51,36 @@ export default {
       { text: 'Metodologi Riset' }
     ],
     cards: [
-      {
-        title: 'Keamanan Jaringan',
-        subtitle: 'Proxy Auth',
-        flex: 3
-      },
-      {
-        title: 'Pemodelan dan Simulasi',
-        subtitle: 'Konsep Simulasi',
-        flex: 3
-      },
-      {
-        title: 'Teori Pemrograman Visual',
-        subtitle: 'Connect to SQL Server',
-        flex: 3
-      },
-      {
-        title: 'Keamanan Jaringan',
-        subtitle: 'Proxy Auth',
-        flex: 3
-      }
+      // {
+      //   id: "",
+      //   title: 'Keamanan Jaringan',
+      //   subtitle: 'Proxy Auth',
+      //   flex: 3
+      // },
+      // {
+      //   title: 'Pemodelan dan Simulasi',
+      //   subtitle: 'Konsep Simulasi',
+      //   flex: 3
+      // },
+      // {
+      //   title: 'Teori Pemrograman Visual',
+      //   subtitle: 'Connect to SQL Server',
+      //   flex: 3
+      // },
+      // {
+      //   title: 'Keamanan Jaringan',
+      //   subtitle: 'Proxy Auth',
+      //   flex: 3
+      // }
     ]
-  })
+  }),
+
+  created() {
+    console.log('abc')
+    axios.get('http://localhost:8000/matakuliah/cari_all').then((resp) => {
+      this.cards = resp.data
+      console.log(this.cards)
+    })
+  }
 }
 </script>

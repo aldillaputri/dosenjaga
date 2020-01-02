@@ -38,13 +38,13 @@
                 <v-row>
                   <v-col cols="6">
                     <v-text-field
-                      v-model="editedItem.jawaban_a"
+                      v-model="editedItem.jawaban1"
                       label="Jawaban A"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="6">
                     <v-text-field
-                      v-model="editedItem.jawaban_b"
+                      v-model="editedItem.jawaban2"
                       label="Jawaban B"
                     ></v-text-field>
                   </v-col>
@@ -52,13 +52,13 @@
                 <v-row>
                   <v-col cols="6">
                     <v-text-field
-                      v-model="editedItem.jawaban_c"
+                      v-model="editedItem.jawaban3"
                       label="Jawaban C"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="6">
                     <v-text-field
-                      v-model="editedItem.jawaban_d"
+                      v-model="editedItem.jawaban4"
                       label="Jawaban D"
                     ></v-text-field>
                   </v-col>
@@ -72,7 +72,15 @@
                       dense
                     ></v-select>
                   </v-col>
+                  <v-col cols="6">
+                    <v-text-field
+                      v-model="editedItem.bobot"
+                      label="Bobot"
+                      dense
+                    ></v-text-field>
+                  </v-col>
                 </v-row>
+                <v-row></v-row>
               </v-container>
             </v-card-text>
 
@@ -96,6 +104,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data: () => ({
     items: ['Jawaban A', 'Jawaban B', 'Jawaban C', 'Jawaban D'],
@@ -107,30 +116,41 @@ export default {
         sortable: false,
         value: 'pertanyaan'
       },
-      { text: 'Jawaban A', value: 'jawaban_a' },
-      { text: 'Jawaban B', value: 'jawaban_b' },
-      { text: 'Jawaban C', value: 'jawaban_c' },
-      { text: 'Jawaban D', value: 'jawaban_d' },
+      { text: 'Matakuliah', value: 'matakuliah.matkul' },
+      { text: 'Tipe', value: 'tipe' },
+      { text: 'Jawaban A', value: 'jawaban1' },
+      { text: 'Jawaban B', value: 'jawaban2' },
+      { text: 'Jawaban C', value: 'jawaban3' },
+      { text: 'Jawaban D', value: 'jawaban4' },
       { text: 'Kunci', value: 'kunci' },
+      { text: 'Bobot', value: 'bobot' },
       { text: 'Actions', value: 'action', sortable: false }
     ],
     soal: [],
     editedIndex: -1,
     editedItem: {
       pertanyaan: '',
-      jawaban_a: '',
-      jawaban_b: '',
-      jawaban_c: '',
-      jawaban_d: '',
-      kunci: ''
+      matakuliah: '',
+      tipe: 'pilgan',
+      jawaban1: '',
+      jawaban2: '',
+      jawaban3: '',
+      jawaban4: '',
+      kunci: '',
+      bobot: '',
+      creator: ''
     },
     defaultItem: {
       pertanyaan: '',
-      jawaban_a: '',
-      jawaban_b: '',
-      jawaban_c: '',
-      jawaban_d: '',
-      kunci: ''
+      matakuliah: '',
+      tipe: 'pilgan',
+      jawaban1: '',
+      jawaban2: '',
+      jawaban3: '',
+      jawaban4: '',
+      kunci: '',
+      bobot: '',
+      creator: ''
     }
   }),
 
@@ -148,23 +168,31 @@ export default {
 
   created() {
     this.initialize()
+    this.editedItem.matakuliah = this.$route.query.matakuliah
+    axios
+      .get(
+        'http://localhost:8000/soal/cari_all?matakuliah=' +
+          this.$route.query.matakuliah +
+          '&user=' +
+          this.$auth.user._id
+      )
+      .then((resp) => {
+        this.soal = resp.data
+        console.log(this.soal)
+      })
   },
 
   methods: {
     initialize() {
-      this.soal = [
-        {
-          pertanyaan: 'Ada berapa step hacking?',
-          jawaban_a: '1',
-          jawaban_b: '2',
-          jawaban_c: '3',
-          jawaban_d: '7',
-          kunci: 'D'
-        }
-      ]
+      this.editedItem.tipe = 'pilgan'
+      this.defaultItem.tipe = 'pilgan'
+      this.editedItem.creator = this.$auth.user._id
+      this.defaultItem.creator = this.$auth.user._id
+      this.soal = []
     },
 
     editItem(item) {
+      // axios.post('http://localhost:8000/soal/'+)
       this.editedIndex = this.soal.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
@@ -191,6 +219,9 @@ export default {
         this.soal.push(this.editedItem)
       }
       this.close()
+      axios.post('http://localhost:8000/soal', this.editedItem).then((resp) => {
+        // console.log(resp)
+      })
     }
   }
 }

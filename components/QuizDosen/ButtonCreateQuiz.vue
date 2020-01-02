@@ -7,7 +7,7 @@
     :to="link"
     @click="loader = 'loading4'"
   >
-    <v-icon left dark>mdi-pencil</v-icon>Buat Kuis
+    <v-icon left dark>mdi-pencil</v-icon>Buat Kuis Baru
   </v-btn>
 </template>
 <style>

@@ -1,7 +1,7 @@
 <template>
   <v-card class="pa-5">
     <v-form ref="form" v-model="valid" lazy-validation>
-      <div><v-icon>mdi-comment-question-outline</v-icon>Bank Soal</div>
+      <div><v-icon>mdi-comment-question-outline</v-icon>&nbsp;Bank Soal</div>
 
       <!-- Mata Kuliah -->
       <v-col>

@@ -21,6 +21,7 @@
             :disabled="loading3"
             color="primary"
             class="ma-2 white--text"
+            :to="link"
             @click="loader = 'loading3'"
           >
             Join
@@ -34,6 +35,7 @@
 <script>
 export default {
   data: () => ({
+    link: '/quiz-mahasiswa/join',
     dropdown_edit: [
       { text: 'Keamanan Jaringan' },
       { text: 'Basis Data' },

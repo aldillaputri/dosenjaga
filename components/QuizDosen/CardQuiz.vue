@@ -10,6 +10,9 @@
             <v-icon color="info">mdi-eye</v-icon>
           </v-btn>
           <v-btn icon color="secondary">
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+          <v-btn icon color="error">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </v-card-actions>

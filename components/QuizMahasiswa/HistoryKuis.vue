@@ -4,13 +4,17 @@
       <thead>
         <tr>
           <th class="text-left">Kuis</th>
+          <th class="text-left">Tanggal</th>
           <th class="text-left">Oleh</th>
+          <th class="text-left">Nilai</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="item in desserts" :key="item.name">
           <td>{{ item.name }}</td>
+          <td>{{ item.tanggal }}</td>
           <td>{{ item.dosen }}</td>
+          <td>{{ item.nilai }}</td>
         </tr>
       </tbody>
     </template>
@@ -23,15 +27,21 @@ export default {
       desserts: [
         {
           name: 'D4A Pemodelan Simulasi',
-          dosen: 'Nana Ramadijanti'
+          tanggal: '22 Desember 2019',
+          dosen: 'Nana Ramadijanti',
+          nilai: 80
         },
         {
           name: 'D4A Konsep Jaringan',
-          dosen: 237
+          tanggal: '21 Desember 2019',
+          dosen: 'Dwi Susanto',
+          nilai: 95
         },
         {
           name: 'D4A Statistik',
-          dosen: 262
+          tanggal: '28 Desember 2019',
+          dosen: 'Udin Harun',
+          nilai: 88
         }
       ]
     }
