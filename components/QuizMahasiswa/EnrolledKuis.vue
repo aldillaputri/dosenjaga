@@ -10,10 +10,10 @@
         item-value="text"
       ></v-overflow-btn>
     </v-col>
-    <v-col v-for="card in cards" :key="card.title" :cols="card.flex">
+    <v-col v-for="card in cards" :key="card.judul" :cols="3">
       <v-card>
-        <v-card-title class="subtitle-1" v-text="card.title"></v-card-title>
-        <v-card-text v-text="card.subtitle"></v-card-text>
+        <v-card-title class="subtitle-1" v-text="card.judul"></v-card-title>
+        <v-card-text v-text="card.date_created"></v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -21,8 +21,7 @@
             :disabled="loading3"
             color="primary"
             class="ma-2 white--text"
-            :to="link"
-            @click="loader = 'loading3'"
+            :to="link + '?kuis=' + card._id"
           >
             Join
             <v-icon>mdi-arrow-up-bold</v-icon>
@@ -33,6 +32,7 @@
   </v-row>
 </template>
 <script>
+import axios from 'axios'
 export default {
   data: () => ({
     link: '/quiz-mahasiswa/join',
@@ -45,28 +45,13 @@ export default {
       { text: 'Pendidikan Kewarganegaraan' },
       { text: 'Metodologi Riset' }
     ],
-    cards: [
-      {
-        title: 'Keamanan Jaringan',
-        subtitle: 'Proxy Auth',
-        flex: 3
-      },
-      {
-        title: 'Pemodelan dan Simulasi',
-        subtitle: 'Konsep Simulasi',
-        flex: 3
-      },
-      {
-        title: 'Teori Pemrograman Visual',
-        subtitle: 'Connect to SQL Server',
-        flex: 3
-      },
-      {
-        title: 'Keamanan Jaringan',
-        subtitle: 'Proxy Auth',
-        flex: 3
-      }
-    ]
-  })
+    cards: []
+  }),
+  created() {
+    axios.get('http://localhost:8000/kuis/cari_all').then((resp) => {
+      this.cards = resp.data
+      console.log(this.cards)
+    })
+  }
 }
 </script>

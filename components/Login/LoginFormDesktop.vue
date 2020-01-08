@@ -51,6 +51,7 @@ export default {
   },
   methods: {
     login(e) {
+      // console.log('abcd')
       e.preventDefault()
       this.$auth.loginWith('local', {
         data: {

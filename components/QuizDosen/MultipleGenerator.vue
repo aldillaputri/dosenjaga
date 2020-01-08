@@ -1,16 +1,56 @@
 <template>
   <v-form id="form-tambah-soal" ref="form" lazy-validation>
-    <v-div id></v-div>
+    <div><v-icon>mdi-forum</v-icon>&nbsp;Deskripsi Kuis</div>
+    <v-select
+      v-model="editedItem.kuliah"
+      :items="daftarMatakuliah"
+      item-text="matkul"
+      item-value="_id"
+      label="Kuliah"
+    ></v-select>
+    <v-text-field v-model="editedItem.judul" label="Judul Kuis"></v-text-field>
+    <!--datepicker-->
+    <v-row>
+      <v-col cols="12" sm="6" md="4">
+        <v-menu
+          v-model="menuDate"
+          :close-on-content-click="false"
+          :nudge-right="40"
+          transition="scale-transition"
+          offset-y
+          min-width="290px"
+        >
+          <template v-slot:activator="{ on }">
+            <v-text-field
+              v-model="editedItem.date_created"
+              label="Tanggal Mulai Kuis"
+              readonly
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            v-model="editedItem.date_created"
+            @input="menuDate = false"
+          ></v-date-picker>
+        </v-menu>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" sm="6" md="4">
+        <v-text-field v-model="editedItem.durasi" label="Durasi"></v-text-field>
+      </v-col>
+    </v-row>
     <!-- expansion panel -->
     <div v-for="(line, index) in lines" :key="index" class="row">
-      <!-- <h1 v-if="line.type == 'pilgan'">PILGAN</h1>
-      <h1 v-else>ESSAY</h1>-->
       <template>
         <v-expansion-panels class="ma-3">
           <v-expansion-panel>
             <v-expansion-panel-header>
               <template v-slot:default="{ open }">
-                <v-row v-if="line.type == 'pilgan' || 'essay'" no-gutters>
+                <v-row
+                  v-if="line.tipe == 'Pilihan Ganda' || 'Essay'"
+                  no-gutters
+                >
                   <v-col cols="4">Soal</v-col>
                   <v-col cols="8" class="text--secondary">
                     <v-fade-transition leave-absolute>
@@ -25,94 +65,69 @@
               <v-row id="row-">
                 <v-col>
                   <v-text-field
-                    v-if="line.type == 'pilgan' || 'essay'"
-                    v-model="line.soal"
+                    v-if="line.tipe == 'Pilihan Ganda' || 'Essay'"
+                    v-model="line.pertanyaan"
                     label="Pertanyaan"
-                  ></v-text-field>
-                </v-col>
-                <v-divider vertical class="mx-4"></v-divider>
-                <v-col cols="3">
-                  <v-text-field
-                    v-if="line.type == 'pilgan' || 'essay'"
-                    v-model="line.poin"
-                    label="Poin"
                   ></v-text-field>
                 </v-col>
               </v-row>
               <v-row>
                 <v-col>
                   <v-text-field
-                    v-if="line.type == 'pilgan' || 'essay'"
+                    v-if="line.tipe == 'Pilihan Ganda' || 'Essay'"
                     v-model="line.jawaban1"
                     label="Jawaban"
                   ></v-text-field>
                 </v-col>
-                <v-divider vertical class="mx-4"></v-divider>
-                <v-col cols="3">
-                  <v-checkbox
-                    v-if="line.type == 'pilgan'"
-                    v-model="line.checkbox1"
-                    label="Jawaban Benar"
-                    hide-details
-                    class="shrink mr-2 mt-0"
-                  ></v-checkbox>
-                </v-col>
               </v-row>
               <v-row>
                 <v-col>
                   <v-text-field
-                    v-if="line.type == 'pilgan'"
+                    v-if="line.tipe == 'Pilihan Ganda'"
                     v-model="line.jawaban2"
                     label="Jawaban"
                   ></v-text-field>
                 </v-col>
-                <v-divider vertical class="mx-4"></v-divider>
-                <v-col cols="3">
-                  <v-checkbox
-                    v-if="line.type == 'pilgan'"
-                    v-model="line.checkbox2"
-                    label="Jawaban Benar"
-                    hide-details
-                    class="shrink mr-2 mt-0"
-                  ></v-checkbox>
-                </v-col>
               </v-row>
               <v-row>
                 <v-col>
                   <v-text-field
-                    v-if="line.type == 'pilgan'"
+                    v-if="line.tipe == 'Pilihan Ganda'"
                     v-model="line.jawaban3"
                     label="Jawaban"
                   ></v-text-field>
                 </v-col>
-                <v-divider vertical class="mx-4"></v-divider>
-                <v-col cols="3">
-                  <v-checkbox
-                    v-if="line.type == 'pilgan'"
-                    v-model="line.checkbox3"
-                    label="Jawaban Benar"
-                    hide-details
-                    class="shrink mr-2 mt-0"
-                  ></v-checkbox>
-                </v-col>
               </v-row>
               <v-row>
                 <v-col>
                   <v-text-field
-                    v-if="line.type == 'pilgan'"
+                    v-if="line.tipe == 'Pilihan Ganda'"
                     v-model="line.jawaban4"
                     label="Jawaban"
                   ></v-text-field>
                 </v-col>
-                <v-divider vertical class="mx-4"></v-divider>
+              </v-row>
+              <v-row>
                 <v-col cols="3">
-                  <v-checkbox
-                    v-if="line.type == 'pilgan'"
-                    v-model="line.checkbox4"
-                    label="Jawaban Benar"
-                    hide-details
-                    class="shrink mr-2 mt-0"
-                  ></v-checkbox>
+                  <v-text-field
+                    v-if="line.tipe == 'Pilihan Ganda' || 'Essay'"
+                    v-model="line.bobot"
+                    label="Bobot"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="6">
+                  <v-select
+                    v-if="line.tipe == 'Pilihan Ganda'"
+                    v-model="line.kunci"
+                    :items="items"
+                    label="Kunci Jawaban"
+                    dense
+                    chips
+                    attach
+                    multiple
+                  ></v-select>
                 </v-col>
               </v-row>
               <v-card-actions>
@@ -131,13 +146,13 @@
       <v-radio-group v-model="radio_grup" row>
         <v-radio
           label="Pilihan Ganda"
-          value="pilgan"
-          @change="getValueRadioGrup('pilgan')"
+          value="Pilihan Ganda"
+          @change="getValueRadioGrup('Pilihan Ganda')"
         ></v-radio>
         <v-radio
           label="Essay"
-          value="essay"
-          @change="getValueRadioGrup('essay')"
+          value="Essay"
+          @change="getValueRadioGrup('Essay')"
         ></v-radio>
       </v-radio-group>
       <v-btn outlined color="indigo" small @click="addQuestion"
@@ -150,48 +165,71 @@
       <v-spacer></v-spacer>
       <v-btn color="error" to="/">Batal</v-btn>
       <v-btn color="normal" @click="reset">Reset</v-btn>
-      <v-btn color="success" @click="validate">Buat</v-btn>
+      <v-btn color="success" @click="save">Buat</v-btn>
     </v-card-actions>
   </v-form>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data: () => ({
+    // datepicker
+    daftarMatakuliah: [],
+    date: new Date().toISOString().substr(0, 10),
+    modal: false,
+    menuDate: false,
+
+    select: null,
+    items: ['A', 'B', 'C', 'D'],
+
     checkbox: false,
     radio_grup: 'radio1',
     radio1: ' radio dari data',
+
+    soal: [],
+    editedItem: {
+      kuliah: '',
+      judul: '',
+      date_created: '',
+      durasi: ''
+    },
+
     // expansion panels
     lines: [
-      {
-        type: '',
-        soal: '',
-        poin: '',
-        jawaban1: '',
-        jawaban2: '',
-        jawaban3: '',
-        jawaban4: '',
-        checkbox1: '',
-        checkbox2: '',
-        checkbox3: '',
-        checkbox4: ''
-      }
+      // {
+      //   kuliah: '',
+      //   tipe: '',
+      //   pertanyaan: '',
+      //   jawaban1: '',
+      //   jawaban2: '',
+      //   jawaban3: '',
+      //   jawaban4: '',
+      //   kunci: '',
+      //   bobot: ''
+      // }
     ],
-    // lines_essay: [
-    //   {
-    //     soal: 'tes soal'
-    //   }
-    // ],
     blockRemoval: true
   }),
+  mounted() {
+    // this.addLine()
+    this.editedItem.creator = this.$auth.user._id
+    axios.get('http://localhost:8000/matakuliah/cari_all').then((resp) => {
+      this.daftarMatakuliah = resp.data
+
+      console.log(this.matakuliah)
+    })
+  },
+  // created() {
+  //   axios.get('http://localhost:8000/kuis/cari_all').then((resp) => {
+  //     this.soal = resp.data
+  //     console.log(this.soal)
+  //   })
+  // },
 
   methods: {
     getValueRadioGrup(v) {
-      // console.log(this.radio1)
-      // console.log(v)
       this.radio1 = v
-      // console.log(this.radio1)
-      // return v
     },
     validate() {
       if (this.$refs.form.validate()) {
@@ -205,22 +243,22 @@ export default {
       this.$refs.form.resetValidation()
     },
     addQuestion() {
-      const checkEmptyLines = this.lines.filter((line) => line.number === null)
+      // const checkEmptyLines = this.lines.filter((line) => line.number === null)
       if (
-        checkEmptyLines.length >= 0 &&
-        this.lines.length > 0 &&
-        this.radio1 === 'pilgan'
+        // checkEmptyLines.length >= 0 &&
+        // this.lines.length > 0 &&
+        this.radio1 === 'Pilihan Ganda'
       ) {
         this.lines.push({
-          type: 'pilgan'
+          tipe: 'Pilihan Ganda'
         })
       } else if (
-        checkEmptyLines.length >= 0 &&
-        this.lines.length > 0 &&
-        this.radio1 === 'essay'
+        // checkEmptyLines.length >= 0 &&
+        // this.lines.length > 0 &&
+        this.radio1 === 'Essay'
       ) {
         this.lines.push({
-          type: 'essay'
+          tipe: 'Essay'
         })
       }
     },
@@ -228,8 +266,20 @@ export default {
       if (this.blockRemoval) this.lines.splice(lineId, 1)
     },
 
-    mounted() {
-      this.addLine()
+    save() {
+      this.soal.push(this.editedItem)
+      // this.close()
+      const data = { ...this.editedItem }
+      data.pertanyaans = this.lines
+      data.pertanyaans.forEach((element, idx) => {
+        data.pertanyaans[idx].matakuliah = data.kuliah
+        if (data.pertanyaans[idx].creator === undefined) {
+          data.pertanyaans[idx].creator = this.$auth.user._id
+        }
+      })
+      axios.post('http://localhost:8000/kuis', data).then((resp) => {
+        console.log(this.lines)
+      })
     }
   }
 }

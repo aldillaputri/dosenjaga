@@ -19,7 +19,7 @@
     <v-col v-for="card in cards" :key="card.matkul" :cols="3">
       <v-card outlined>
         <v-card-title class="subtitle-1" v-text="card.matkul"></v-card-title>
-        <v-card-text v-text="card.subtitle"></v-card-text>
+        <v-card-text v-text="card.tipe"></v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn icon :to="link + '?matakuliah=' + card._id">
@@ -50,36 +50,13 @@ export default {
       { text: 'Pendidikan Kewarganegaraan' },
       { text: 'Metodologi Riset' }
     ],
-    cards: [
-      // {
-      //   id: "",
-      //   title: 'Keamanan Jaringan',
-      //   subtitle: 'Proxy Auth',
-      //   flex: 3
-      // },
-      // {
-      //   title: 'Pemodelan dan Simulasi',
-      //   subtitle: 'Konsep Simulasi',
-      //   flex: 3
-      // },
-      // {
-      //   title: 'Teori Pemrograman Visual',
-      //   subtitle: 'Connect to SQL Server',
-      //   flex: 3
-      // },
-      // {
-      //   title: 'Keamanan Jaringan',
-      //   subtitle: 'Proxy Auth',
-      //   flex: 3
-      // }
-    ]
+    cards: []
   }),
 
   created() {
-    console.log('abc')
     axios.get('http://localhost:8000/matakuliah/cari_all').then((resp) => {
       this.cards = resp.data
-      console.log(this.cards)
+      // console.log(this.cards)
     })
   }
 }

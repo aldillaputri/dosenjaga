@@ -52,7 +52,7 @@
 export default {
   data() {
     return {
-      link: '/quiz/pilihanganda',
+      link: '/quiz/create',
       loader: null,
       loading: false,
       loading2: false,

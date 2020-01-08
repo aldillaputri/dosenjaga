@@ -11,9 +11,9 @@
       </thead>
       <tbody>
         <tr v-for="item in desserts" :key="item.name">
-          <td>{{ item.name }}</td>
-          <td>{{ item.tanggal }}</td>
-          <td>{{ item.dosen }}</td>
+          <td>{{ item.kuis.judul }}</td>
+          <td>{{ item.kuis.date_created }}</td>
+          <td>{{ item.kuis.creator.nama }}</td>
           <td>{{ item.nilai }}</td>
         </tr>
       </tbody>
@@ -21,30 +21,20 @@
   </v-simple-table>
 </template>
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
-      desserts: [
-        {
-          name: 'D4A Pemodelan Simulasi',
-          tanggal: '22 Desember 2019',
-          dosen: 'Nana Ramadijanti',
-          nilai: 80
-        },
-        {
-          name: 'D4A Konsep Jaringan',
-          tanggal: '21 Desember 2019',
-          dosen: 'Dwi Susanto',
-          nilai: 95
-        },
-        {
-          name: 'D4A Statistik',
-          tanggal: '28 Desember 2019',
-          dosen: 'Udin Harun',
-          nilai: 88
-        }
-      ]
+      desserts: []
     }
+  },
+  mounted() {
+    axios
+      .get('http://localhost:8000/hasil/cari_all?user=' + this.$auth.user._id)
+      .then((resp) => {
+        this.desserts = resp.data
+        console.log(this.desserts)
+      })
   }
 }
 </script>

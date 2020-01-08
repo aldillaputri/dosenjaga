@@ -70,6 +70,9 @@
                       :items="items"
                       label="Kunci Jawaban"
                       dense
+                      chips
+                      attach
+                      multiple
                     ></v-select>
                   </v-col>
                   <v-col cols="6">
@@ -107,7 +110,7 @@
 import axios from 'axios'
 export default {
   data: () => ({
-    items: ['Jawaban A', 'Jawaban B', 'Jawaban C', 'Jawaban D'],
+    items: ['A', 'B', 'C', 'D'],
     dialog: false,
     headers: [
       {
@@ -118,10 +121,10 @@ export default {
       },
       { text: 'Matakuliah', value: 'matakuliah.matkul' },
       { text: 'Tipe', value: 'tipe' },
-      { text: 'Jawaban A', value: 'jawaban1' },
-      { text: 'Jawaban B', value: 'jawaban2' },
-      { text: 'Jawaban C', value: 'jawaban3' },
-      { text: 'Jawaban D', value: 'jawaban4' },
+      { text: 'A', value: 'jawaban1' },
+      { text: 'B', value: 'jawaban2' },
+      { text: 'C', value: 'jawaban3' },
+      { text: 'D', value: 'jawaban4' },
       { text: 'Kunci', value: 'kunci' },
       { text: 'Bobot', value: 'bobot' },
       { text: 'Actions', value: 'action', sortable: false }
@@ -131,7 +134,7 @@ export default {
     editedItem: {
       pertanyaan: '',
       matakuliah: '',
-      tipe: 'pilgan',
+      tipe: 'Pilihan Ganda',
       jawaban1: '',
       jawaban2: '',
       jawaban3: '',
@@ -143,7 +146,7 @@ export default {
     defaultItem: {
       pertanyaan: '',
       matakuliah: '',
-      tipe: 'pilgan',
+      tipe: 'Pilihan Ganda',
       jawaban1: '',
       jawaban2: '',
       jawaban3: '',
@@ -184,15 +187,14 @@ export default {
 
   methods: {
     initialize() {
-      this.editedItem.tipe = 'pilgan'
-      this.defaultItem.tipe = 'pilgan'
+      this.editedItem.tipe = 'Pilihan Ganda'
+      this.defaultItem.tipe = 'Pilihan Ganda'
       this.editedItem.creator = this.$auth.user._id
       this.defaultItem.creator = this.$auth.user._id
       this.soal = []
     },
 
     editItem(item) {
-      // axios.post('http://localhost:8000/soal/'+)
       this.editedIndex = this.soal.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true

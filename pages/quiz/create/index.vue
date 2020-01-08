@@ -2,7 +2,6 @@
   <v-card class="pa-5">
     <v-row>
       <v-col cols="7" class="pa-5">
-        <quiz-description></quiz-description>
         <create-quiz></create-quiz>
       </v-col>
       <v-divider vertical class="ma-10"></v-divider>
@@ -15,12 +14,10 @@
 
 <script>
 import CreateQuiz from '~/components/QuizDosen/MultipleGenerator.vue'
-import QuizDescription from '~/components/QuizDosen/QuizDescription.vue'
 import InsertBankSoal from '~/components/QuizDosen/InsertBankSoal.vue'
 export default {
   components: {
     CreateQuiz,
-    QuizDescription,
     InsertBankSoal
   }
 }
