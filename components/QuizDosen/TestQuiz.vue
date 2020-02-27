@@ -16,6 +16,7 @@
               </v-col>
             </v-row>
             <div class="ml-3">
+              <!-- <p>{{ jawaban[n] }}</p> -->
               <v-checkbox
                 v-if="s.tipe === 'Pilihan Ganda'"
                 v-model="jawaban[n]"
@@ -55,7 +56,18 @@
         </v-stepper-content>
       </template>
     </v-stepper>
-    <v-btn color="primary" @click="submit()">Submit</v-btn>
+    <v-btn color="primary" @click="dialog = false">Submit</v-btn>
+    <v-dialog v-model="dialog" max-width="290">
+      <v-card>
+        <v-card-title class="headline">Berhasil!</v-card-title>
+
+        <v-card-text>Kuis sudah siap dipublish.</v-card-text>
+
+        <v-card-actions>
+          <v-btn color="green darken-1" text @click="dialog = false">OK</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -64,6 +76,7 @@ import axios from 'axios'
 export default {
   data() {
     return {
+      dialog: false,
       e1: 1,
       // soals: 10,
       vertical: false,
@@ -93,6 +106,20 @@ export default {
       requestAnimationFrame(() => (this.e1 = 1)) // Workarounds
     }
   },
+  // created() {
+  //   this.soal.kuis = this.$route.query.kuis
+  //   axios
+  //     .get(
+  //       'http://localhost:8000/kuis/cari_all?id=' +
+  //         this.$route.query.kuis +
+  //         '&user=' +
+  //         this.$auth.user._id
+  //     )
+  //     .then((resp) => {
+  //       this.kuis = resp.data
+  //       console.log(this.kuis)
+  //     })
+  // },
   mounted() {
     axios
       .get(
@@ -124,7 +151,6 @@ export default {
     submit() {
       this.soal.forEach((element, idx) => {
         this.soal[idx].jawabanPilganUser = this.jawaban[idx]
-        window.location = '/quiz-mahasiswa/history'
       })
       axios
         .post('http://localhost:8000/hasil/hitung', {

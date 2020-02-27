@@ -1,56 +1,53 @@
 <template>
   <div>
     <v-stepper v-model="e1" non-linear vertical>
-      <template v-for="(s, n) in soal">
+      <template v-for="(j, n) in jawaban">
         <v-stepper-step :key="`${n}-step`" :complete="e1 > n" :step="n" editable
           >Soal {{ n + 1 }}</v-stepper-step
         >
-
         <v-stepper-content :key="`${n}-content`" :step="n">
           <v-card class="mb-12" outlined>
             <v-row>
               <v-col class="ml-3 mr-3">
-                <v-text-field v-model="s.pertanyaan" readonly>
+                <v-text-field v-model="j.pertanyaan.pertanyaan" readonly>
                   <p class="text ml-3"></p>
                 </v-text-field>
               </v-col>
             </v-row>
             <div class="ml-3">
               <v-checkbox
-                v-if="s.tipe === 'Pilihan Ganda'"
+                v-if="j.pertanyaan.tipe === 'Pilihan Ganda'"
                 v-model="jawaban[n]"
-                :label="s.jawaban1"
+                :label="j.pertanyaan.jawaban1"
                 value="A"
               ></v-checkbox>
               <v-checkbox
-                v-if="s.tipe === 'Pilihan Ganda'"
+                v-if="j.pertanyaan.tipe === 'Pilihan Ganda'"
                 v-model="jawaban[n]"
-                :label="s.jawaban2"
+                :label="j.pertanyaan.jawaban2"
                 value="B"
               ></v-checkbox>
               <v-checkbox
-                v-if="s.tipe === 'Pilihan Ganda'"
+                v-if="j.pertanyaan.tipe === 'Pilihan Ganda'"
                 v-model="jawaban[n]"
-                :label="s.jawaban3"
+                :label="j.pertanyaan.jawaban3"
                 value="C"
               ></v-checkbox>
               <v-checkbox
-                v-if="s.tipe === 'Pilihan Ganda'"
+                v-if="j.pertanyaan.tipe === 'Pilihan Ganda'"
                 v-model="jawaban[n]"
-                :label="s.jawaban4"
+                :label="j.pertanyaan.jawaban4"
                 value="D"
               ></v-checkbox>
               <v-text-field
-                v-if="s.tipe === 'Essay'"
-                v-model="s.jawabanEssayUser"
+                v-if="j.pertanyaan.tipe === 'Essay'"
+                v-model="j.jawabanEssayUser"
               >
                 <p class="text ml-3"></p>
               </v-text-field>
             </div>
           </v-card>
-
           <v-btn color="primary" @click="nextStep(n)">Continue</v-btn>
-
           <v-btn text>Cancel</v-btn>
         </v-stepper-content>
       </template>
@@ -69,8 +66,8 @@ export default {
       vertical: false,
       altLabels: false,
       editable: true,
-      jawaban: [],
-      soal: [
+      // jawaban: [],
+      jawaban: [
         {
           kuis: '',
           pertanyaan: '',
@@ -95,18 +92,10 @@ export default {
   },
   mounted() {
     axios
-      .get(
-        'http://localhost:8000/kuis/cari_all?_id=' +
-          this.$route.query.kuis +
-          '&user=' +
-          this.$auth.user._id
-      )
+      .get('http://localhost:8000/hasil/cari/' + this.$route.query.hasil)
       .then((resp) => {
         console.log(resp.data)
-        this.soal = resp.data[0].id_pertanyaan
-        this.soal.forEach((element, idx) => {
-          this.jawaban[idx] = []
-        })
+        this.jawaban = resp.data.jawaban
       })
   },
 
@@ -120,21 +109,6 @@ export default {
       } else {
         this.e1 = n + 1
       }
-    },
-    submit() {
-      this.soal.forEach((element, idx) => {
-        this.soal[idx].jawabanPilganUser = this.jawaban[idx]
-        window.location = '/quiz-mahasiswa/history'
-      })
-      axios
-        .post('http://localhost:8000/hasil/hitung', {
-          soal: this.soal,
-          user: this.$auth.user._id,
-          kuis: this.$route.query.kuis
-        })
-        .then((resp) => {
-          console.log(resp)
-        })
     }
   }
 }

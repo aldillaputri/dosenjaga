@@ -12,11 +12,11 @@
         </v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
-        <v-dialog v-model="dialog" max-width="500px">
+        <v-dialog v-model="dialogEssay" max-width="500px">
           <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark class="mb-2" v-on="on"
-              >Tambah Soal</v-btn
-            >
+            <v-btn color="primary" dark class="mb-2" v-on="on">
+              <v-icon>mdi-plus</v-icon>&nbsp;Essay
+            </v-btn>
           </template>
           <v-card>
             <v-card-title>
@@ -28,7 +28,7 @@
                 <v-row>
                   <v-col cols="12">
                     <v-textarea
-                      v-model="editedItem.pertanyaan"
+                      v-model="editedItemEssay.pertanyaan"
                       auto-grow
                       rows="2"
                       label="Pertanyaan"
@@ -36,48 +36,17 @@
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="6">
+                  <v-col cols="12">
                     <v-text-field
-                      v-model="editedItem.jawaban1"
-                      label="Jawaban A"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="6">
-                    <v-text-field
-                      v-model="editedItem.jawaban2"
-                      label="Jawaban B"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="6">
-                    <v-text-field
-                      v-model="editedItem.jawaban3"
-                      label="Jawaban C"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="6">
-                    <v-text-field
-                      v-model="editedItem.jawaban4"
-                      label="Jawaban D"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="6">
-                    <v-select
-                      v-model="editedItem.kunci"
-                      :items="items"
+                      v-model="editedItemEssay.jawaban1"
                       label="Kunci Jawaban"
-                      dense
-                      chips
-                      attach
-                      multiple
-                    ></v-select>
+                    ></v-text-field>
                   </v-col>
+                </v-row>
+                <v-row>
                   <v-col cols="6">
                     <v-text-field
-                      v-model="editedItem.bobot"
+                      v-model="editedItemEssay.bobot"
                       label="Bobot"
                       dense
                     ></v-text-field>
@@ -89,8 +58,100 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">Batal</v-btn>
-              <v-btn color="blue darken-1" text @click="save">Simpan</v-btn>
+              <v-btn color="blue darken-1" text @click="closeEssay"
+                >Batal</v-btn
+              >
+              <v-btn color="blue darken-1" text @click="saveEssay"
+                >Simpan</v-btn
+              >
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <!-- <v-spacer></v-spacer> -->
+        &nbsp; &nbsp;
+        <v-dialog v-model="dialogPilgan" max-width="500px">
+          <template v-slot:activator="{ on }">
+            <v-btn color="primary" dark class="mb-2" v-on="on">
+              <v-icon>mdi-plus</v-icon>&nbsp;Pilihan Ganda
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="headline">{{ formTitle }}</span>
+            </v-card-title>
+
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12">
+                    <v-textarea
+                      v-model="editedItemPilgan.pertanyaan"
+                      auto-grow
+                      rows="2"
+                      label="Pertanyaan"
+                    ></v-textarea>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="6">
+                    <v-text-field
+                      v-model="editedItemPilgan.jawaban1"
+                      label="Jawaban A"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-text-field
+                      v-model="editedItemPilgan.jawaban2"
+                      label="Jawaban B"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="6">
+                    <v-text-field
+                      v-model="editedItemPilgan.jawaban3"
+                      label="Jawaban C"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-text-field
+                      v-model="editedItemPilgan.jawaban4"
+                      label="Jawaban D"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="6">
+                    <v-select
+                      v-model="editedItemPilgan.kunci"
+                      :items="items"
+                      label="Kunci Jawaban"
+                      dense
+                      chips
+                      attach
+                      multiple
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-text-field
+                      v-model="editedItemPilgan.bobot"
+                      label="Bobot"
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row></v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closePilgan"
+                >Batal</v-btn
+              >
+              <v-btn color="blue darken-1" text @click="savePilgan"
+                >Simpan</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -111,7 +172,8 @@ import axios from 'axios'
 export default {
   data: () => ({
     items: ['A', 'B', 'C', 'D'],
-    dialog: false,
+    dialogPilgan: false,
+    dialogEssay: false,
     headers: [
       {
         text: 'Pertanyaan',
@@ -131,7 +193,7 @@ export default {
     ],
     soal: [],
     editedIndex: -1,
-    editedItem: {
+    editedItemPilgan: {
       pertanyaan: '',
       matakuliah: '',
       tipe: 'Pilihan Ganda',
@@ -143,7 +205,23 @@ export default {
       bobot: '',
       creator: ''
     },
-    defaultItem: {
+    editedItemEssay: {
+      pertanyaan: '',
+      matakuliah: '',
+      tipe: 'Essay',
+      jawaban1: '',
+      bobot: '',
+      creator: ''
+    },
+    defaultItemEssay: {
+      pertanyaan: '',
+      matakuliah: '',
+      tipe: 'Essay',
+      jawaban1: '',
+      bobot: '',
+      creator: ''
+    },
+    defaultItemPilgan: {
       pertanyaan: '',
       matakuliah: '',
       tipe: 'Pilihan Ganda',
@@ -171,7 +249,8 @@ export default {
 
   created() {
     this.initialize()
-    this.editedItem.matakuliah = this.$route.query.matakuliah
+    this.editedItemPilgan.matakuliah = this.$route.query.matakuliah
+    this.editedItemEssay.matakuliah = this.$route.query.matakuliah
     axios
       .get(
         'http://localhost:8000/soal/cari_all?matakuliah=' +
@@ -187,43 +266,72 @@ export default {
 
   methods: {
     initialize() {
-      this.editedItem.tipe = 'Pilihan Ganda'
-      this.defaultItem.tipe = 'Pilihan Ganda'
-      this.editedItem.creator = this.$auth.user._id
-      this.defaultItem.creator = this.$auth.user._id
+      this.editedItemPilgan.tipe = 'Pilihan Ganda'
+      this.defaultItemPilgan.tipe = 'Pilihan Ganda'
+      this.editedItemPilgan.creator = this.$auth.user._id
+      this.defaultItemPilgan.creator = this.$auth.user._id
+
+      this.editedItemEssay.tipe = 'Essay'
+      this.defaultItemEssay.tipe = 'Essay'
+      this.editedItemEssay.creator = this.$auth.user._id
+      this.defaultItemEssay.creator = this.$auth.user._id
+
       this.soal = []
     },
 
     editItem(item) {
       this.editedIndex = this.soal.indexOf(item)
-      this.editedItem = Object.assign({}, item)
+      this.editedItemPilgan = Object.assign({}, item)
+      this.editedItemEssay = Object.assign({}, item)
       this.dialog = true
     },
 
     deleteItem(item) {
       const index = this.soal.indexOf(item)
       confirm('Are you sure you want to delete this item?') &&
-        this.soal.splice(index, 1)
+        this.soal.splice(index, 1) &&
+        axios.delete('http://localhost:8000/soal/' + item._id)
     },
 
-    close() {
-      this.dialog = false
+    closePilgan() {
+      this.dialogPilgan = false
       setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedItemPilgan = Object.assign({}, this.defaultItemPilgan)
+        this.editedIndex = -1
+      }, 300)
+    },
+    closeEssay() {
+      this.dialogEssay = false
+      setTimeout(() => {
+        this.editedItemEssay = Object.assign({}, this.defaultItemEssay)
         this.editedIndex = -1
       }, 300)
     },
 
-    save() {
+    savePilgan() {
       if (this.editedIndex > -1) {
-        Object.assign(this.soal[this.editedIndex], this.editedItem)
+        Object.assign(this.soal[this.editedIndex], this.editedItemPilgan)
       } else {
-        this.soal.push(this.editedItem)
+        this.soal.push(this.editedItemPilgan)
       }
-      this.close()
-      axios.post('http://localhost:8000/soal', this.editedItem).then((resp) => {
-        // console.log(resp)
-      })
+      this.dialogPilgan = false
+      axios
+        .post('http://localhost:8000/soal', this.editedItemPilgan)
+        .then((resp) => {})
+    },
+    saveEssay() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.soal[this.editedIndex], this.editedItemEssay)
+      } else {
+        this.soal.push(this.editedItemEssay)
+      }
+      // this.close()
+      this.dialogEssay = false
+      axios
+        .post('http://localhost:8000/soal', this.editedItemEssay)
+        .then((resp) => {
+          // console.log(resp)
+        })
     }
   }
 }

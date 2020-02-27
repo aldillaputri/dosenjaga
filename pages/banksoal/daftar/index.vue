@@ -1,7 +1,7 @@
 <template>
   <v-card class="pa-5" outlined>
     <v-row>
-      <v-col cols="9">
+      <v-col>
         <v-icon>mdi-comment-question-outline</v-icon>&nbsp; Bank Soal
       </v-col>
     </v-row>

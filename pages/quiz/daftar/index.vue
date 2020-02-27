@@ -4,14 +4,11 @@
       <v-col cols="9">
         <v-icon>mdi-folder-multiple</v-icon>&nbsp; Data Kuis
       </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
+      <v-col cols="3">
         <button-create-quiz></button-create-quiz>
       </v-col>
     </v-row>
     <v-row>
-      <!-- <drop-down-matkul></drop-down-matkul> -->
       <card-quiz></card-quiz>
     </v-row>
   </v-card>

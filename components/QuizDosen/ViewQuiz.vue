@@ -1,61 +1,49 @@
 <template>
-  <v-card>
-    <v-card-title>
-      <v-text-field
-        v-model="search"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <v-data-table :headers="headers" :items="mahasiswa" :search="search">
-      <template v-slot:item.keterangan="{ item }">
-        <v-chip :color="getColor(item.keterangan)" dark>{{
-          item.keterangan
-        }}</v-chip>
-      </template>
-    </v-data-table>
-  </v-card>
+  <v-simple-table fixed-header height="300px">
+    <template v-slot:default>
+      <thead>
+        <tr>
+          <th class="text-left">Nama Mahasiswa</th>
+          <th class="text-left">Tanggal</th>
+          <th class="text-left">Nilai</th>
+          <th class="text-left">Keterangan</th>
+          <th class="text-left">Detail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in hasil" :key="item.name">
+          <td>{{ item.user.nama }}</td>
+          <td>{{ item.kuis.date_created }}</td>
+          <td>{{ item.nilai }}</td>
+          <td>Tidak Lulus</td>
+          <td>
+            <v-btn icon :to="link + '?hasil=' + item._id">
+              <v-icon color="info">mdi-eye</v-icon>
+            </v-btn>
+          </td>
+        </tr>
+      </tbody>
+    </template>
+  </v-simple-table>
 </template>
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
-      headers: [
-        {
-          text: 'Nama Mahasiswa',
-          align: 'left',
-          sortable: false,
-          value: 'name'
-        },
-        { text: 'Tanggal', value: 'tanggal' },
-        { text: 'Benar', value: 'benar' },
-        { text: 'Salah', value: 'salah' },
-        { text: 'Kosong', value: 'kosong' },
-        { text: 'Nilai', value: 'nilai' },
-        { text: 'Keterangan', value: 'keterangan' }
-      ],
-      mahasiswa: [
-        {
-          name: 'Aldilla Putri',
-          tanggal: '22 Desember 2019',
-          benar: 15,
-          salah: 3,
-          kosong: 2,
-          nilai: 80,
-          keterangan: 'Lulus'
-        },
-        {
-          name: 'Rizka Rahayu',
-          tanggal: '22 Desember 2019',
-          benar: 10,
-          salah: 9,
-          kosong: 1,
-          nilai: 60,
-          keterangan: 'Tidak Lulus'
-        }
-      ]
+      link: 'detail',
+      hasil: []
     }
+  },
+  mounted() {
+    let params = ''
+    if (this.$auth.user.role === 1) {
+      params = '?user=' + this.$auth.user._id
+    }
+    axios.get('http://localhost:8000/hasil/cari_all' + params).then((resp) => {
+      this.hasil = resp.data
+      console.log(this.hasil)
+    })
   },
   methods: {
     getColor(keterangan) {

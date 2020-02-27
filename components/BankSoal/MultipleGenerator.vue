@@ -1,193 +1,183 @@
 <template>
-  <v-card class="pa-5">
-    <v-form ref="form" v-model="valid" lazy-validation>
-      <div><v-icon>mdi-comment-question-outline</v-icon>&nbsp;Bank Soal</div>
+  <v-form id="form-tambah-soal" ref="form" lazy-validation>
+    <div><v-icon>mdi-forum</v-icon>&nbsp;Buat Bank Soal</div>
+    <v-select
+      v-model="editedItem.kuliah"
+      :items="daftarMatakuliah"
+      item-text="matkul"
+      item-value="_id"
+      label="Mata Kuliah"
+    ></v-select>
 
-      <!-- Mata Kuliah -->
-      <v-col>
-        <v-overflow-btn
-          class="my-2"
-          :items="dropdown_edit"
-          label="Mata Kuliah"
-          editable
-          item-value="text"
-        ></v-overflow-btn>
-      </v-col>
+    <!-- expansion panel -->
+    <div v-for="(line, index) in lines" :key="index" class="row">
+      <template>
+        <v-expansion-panels class="ma-3">
+          <v-expansion-panel>
+            <v-expansion-panel-header>
+              <template v-slot:default="{ open }">
+                <v-row
+                  v-if="line.tipe == 'Pilihan Ganda' || 'Essay'"
+                  no-gutters
+                >
+                  <v-col cols="4">Soal</v-col>
+                  <v-col cols="8" class="text--secondary">
+                    <v-fade-transition leave-absolute>
+                      <span v-if="open" key="0">Ketikkan Soal Disini</span>
+                      <span v-else key="1">{{ line.soal }}</span>
+                    </v-fade-transition>
+                  </v-col>
+                </v-row>
+              </template>
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-row id="row-">
+                <v-col>
+                  <v-text-field
+                    v-if="line.tipe == 'Pilihan Ganda' || 'Essay'"
+                    v-model="line.pertanyaan"
+                    label="Pertanyaan"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-text-field
+                    v-if="line.tipe == 'Pilihan Ganda' || 'Essay'"
+                    v-model="line.jawaban1"
+                    label="Jawaban"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-text-field
+                    v-if="line.tipe == 'Pilihan Ganda'"
+                    v-model="line.jawaban2"
+                    label="Jawaban"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-text-field
+                    v-if="line.tipe == 'Pilihan Ganda'"
+                    v-model="line.jawaban3"
+                    label="Jawaban"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-text-field
+                    v-if="line.tipe == 'Pilihan Ganda'"
+                    v-model="line.jawaban4"
+                    label="Jawaban"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="3">
+                  <v-text-field
+                    v-if="line.tipe == 'Pilihan Ganda' || 'Essay'"
+                    v-model="line.bobot"
+                    label="Bobot"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="6">
+                  <v-select
+                    v-if="line.tipe == 'Pilihan Ganda'"
+                    v-model="line.kunci"
+                    :items="items"
+                    label="Kunci Jawaban"
+                    dense
+                    chips
+                    attach
+                    multiple
+                  ></v-select>
+                </v-col>
+              </v-row>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn text color="error" @click="removeQuestion(index)"
+                  >Hapus Soal</v-btn
+                >
+              </v-card-actions>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </template>
+    </div>
+    <v-icon>mdi-chevron-double-down</v-icon>&nbsp;Soal Berikutnya
+    <v-col>
+      <v-radio-group v-model="radio_grup" row>
+        <v-radio
+          label="Pilihan Ganda"
+          value="Pilihan Ganda"
+          @change="getValueRadioGrup('Pilihan Ganda')"
+        ></v-radio>
+        <v-radio
+          label="Essay"
+          value="Essay"
+          @change="getValueRadioGrup('Essay')"
+        ></v-radio>
+      </v-radio-group>
+      <v-btn outlined color="indigo" small @click="addQuestion"
+        >Tambah Soal</v-btn
+      >
+    </v-col>
 
-      <!-- expansion panel -->
-      <div v-for="(line, index) in lines" :key="index" class="row">
-        <template>
-          <v-expansion-panels>
-            <v-expansion-panel>
-              <v-expansion-panel-header>
-                <template v-slot:default="{ open }">
-                  <v-row no-gutters>
-                    <v-col cols="4">Soal</v-col>
-                    <v-col cols="8" class="text--secondary">
-                      <v-fade-transition leave-absolute>
-                        <span v-if="open" key="0">Ketikkan Soal Disini</span>
-                        <span v-else key="1">{{ line.soal }}</span>
-                      </v-fade-transition>
-                    </v-col>
-                  </v-row>
-                </template>
-              </v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <v-row>
-                  <v-col>
-                    <v-text-field
-                      v-model="line.soal"
-                      label="Pertanyaan"
-                      :rules="[(v) => !!v || 'Pertanyaan harus diisi']"
-                    ></v-text-field>
-                  </v-col>
-                  <v-divider vertical class="mx-4"></v-divider>
-                  <v-col cols="3">
-                    <v-text-field
-                      v-model="line.poin"
-                      label="Poin"
-                      :rules="[(v) => !!v || 'Poin harus diisi']"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col>
-                    <v-text-field
-                      v-model="line.jawaban1"
-                      label="Jawaban"
-                      :rules="[(v) => !!v || 'Jawaban harus diisi']"
-                    ></v-text-field>
-                  </v-col>
-                  <v-divider vertical class="mx-4"></v-divider>
-                  <v-col cols="3">
-                    <v-checkbox
-                      v-model="line.checkbox1"
-                      label="Jawaban Benar"
-                      hide-details
-                      class="shrink mr-2 mt-0"
-                    ></v-checkbox>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col>
-                    <v-text-field
-                      v-model="line.jawaban2"
-                      label="Jawaban"
-                    ></v-text-field>
-                  </v-col>
-                  <v-divider vertical class="mx-4"></v-divider>
-                  <v-col cols="3">
-                    <v-checkbox
-                      v-model="line.checkbox2"
-                      label="Jawaban Benar"
-                      hide-details
-                      class="shrink mr-2 mt-0"
-                    ></v-checkbox>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col>
-                    <v-text-field
-                      v-model="line.jawaban3"
-                      label="Jawaban"
-                    ></v-text-field>
-                  </v-col>
-                  <v-divider vertical class="mx-4"></v-divider>
-                  <v-col cols="3">
-                    <v-checkbox
-                      v-model="line.checkbox3"
-                      label="Jawaban Benar"
-                      hide-details
-                      class="shrink mr-2 mt-0"
-                    ></v-checkbox>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col>
-                    <v-text-field
-                      v-model="line.jawaban4"
-                      label="Jawaban"
-                    ></v-text-field>
-                  </v-col>
-                  <v-divider vertical class="mx-4"></v-divider>
-                  <v-col cols="3">
-                    <v-checkbox
-                      v-model="line.checkbox4"
-                      label="Jawaban Benar"
-                      hide-details
-                      class="shrink mr-2 mt-0"
-                    ></v-checkbox>
-                  </v-col>
-                </v-row>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn text color="error" @click="removeQuestion(index)"
-                    >Hapus Soal</v-btn
-                  >
-                </v-card-actions>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
-        </template>
-      </div>
-
-      <v-container>
-        <v-col>
-          <v-btn class="mt-4" color="primary" @click="addQuestion"
-            >Tambah Soal</v-btn
-          >
-        </v-col>
-        <v-card-actions>
-          <b>Total Points:</b>
-          <v-spacer></v-spacer>
-          <v-btn color="error" to="/">Cancel</v-btn>
-          <v-btn color="normal" @click="reset">Reset</v-btn>
-          <v-btn color="success" @click="submit()">Create</v-btn>
-        </v-card-actions>
-      </v-container>
-    </v-form>
-  </v-card>
+    <v-card-actions>
+      <b>Total Point:</b>
+      <v-spacer></v-spacer>
+      <v-btn color="error" to="/">Batal</v-btn>
+      <v-btn color="normal" @click="reset">Reset</v-btn>
+      <v-btn color="success" @click="save">Buat</v-btn>
+    </v-card-actions>
+  </v-form>
 </template>
+
 <script>
+import axios from 'axios'
 export default {
   data: () => ({
-    // expansion panels
-    lines: [
-      {
-        soal: '',
-        poin: '',
-        jawaban1: '',
-        jawaban2: '',
-        jawaban3: '',
-        jawaban4: '',
-        checkbox1: '',
-        checkbox2: '',
-        checkbox3: '',
-        checkbox4: ''
-      }
-    ],
-    dropdown_edit: [
-      { text: 'Keamanan Jaringan' },
-      { text: 'Basis Data' },
-      { text: 'Pemrograman Framework' },
-      { text: 'Agama' },
-      { text: 'Bahasa Inggris' },
-      { text: 'Pendidikan Kewarganegaraan' },
-      { text: 'Metodologi Riset' }
-    ],
-    blockRemoval: true,
-    watch: {
-      lines() {
-        this.blockRemoval = this.lines.length <= 1
-      }
+    daftarMatakuliah: [],
+
+    select: null,
+    items: ['A', 'B', 'C', 'D'],
+
+    checkbox: false,
+    radio_grup: 'radio1',
+    radio1: ' radio dari data',
+
+    soal: [],
+    editedItem: {
+      kuliah: ''
     },
-    totalPoints() {}
+
+    // expansion panels
+    lines: [],
+    blockRemoval: true
   }),
+  mounted() {
+    // this.addLine()
+    this.editedItem.creator = this.$auth.user._id
+    axios.get('http://localhost:8000/matakuliah/cari_all').then((resp) => {
+      this.daftarMatakuliah = resp.data
+
+      console.log(this.matakuliah)
+    })
+  },
 
   methods: {
-    submit() {
+    getValueRadioGrup(v) {
+      this.radio1 = v
+    },
+    validate() {
       if (this.$refs.form.validate()) {
-        this.$store.dispatch('')
+        this.snackbar = true
       }
     },
     reset() {
@@ -197,29 +187,43 @@ export default {
       this.$refs.form.resetValidation()
     },
     addQuestion() {
-      const checkEmptyLines = this.lines.filter((line) => line.number === null)
-
-      if (checkEmptyLines.length >= 1 && this.lines.length > 0) return
-
-      this.lines.push({
-        soal: null,
-        poin: null,
-        jawaban1: null,
-        jawaban2: null,
-        jawaban3: null,
-        jawaban4: null,
-        checkbox1: null,
-        checkbox2: null,
-        checkbox3: null,
-        checkbox4: null
-      })
+      // const checkEmptyLines = this.lines.filter((line) => line.number === null)
+      if (
+        // checkEmptyLines.length >= 0 &&
+        // this.lines.length > 0 &&
+        this.radio1 === 'Pilihan Ganda'
+      ) {
+        this.lines.push({
+          tipe: 'Pilihan Ganda'
+        })
+      } else if (
+        // checkEmptyLines.length >= 0 &&
+        // this.lines.length > 0 &&
+        this.radio1 === 'Essay'
+      ) {
+        this.lines.push({
+          tipe: 'Essay'
+        })
+      }
     },
     removeQuestion(lineId) {
       if (this.blockRemoval) this.lines.splice(lineId, 1)
     },
 
-    mounted() {
-      this.addLine()
+    save() {
+      this.soal.push(this.editedItem)
+      // this.close()
+      const data = { ...this.editedItem }
+      data.pertanyaans = this.lines
+      data.pertanyaans.forEach((element, idx) => {
+        data.pertanyaans[idx].matakuliah = data.kuliah
+        if (data.pertanyaans[idx].creator === undefined) {
+          data.pertanyaans[idx].creator = this.$auth.user._id
+        }
+      })
+      axios.post('http://localhost:8000/kuis', data).then((resp) => {
+        console.log(this.lines)
+      })
     }
   }
 }

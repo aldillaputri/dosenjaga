@@ -6,7 +6,7 @@
       :items="daftarMatakuliah"
       item-text="matkul"
       item-value="_id"
-      label="Kuliah"
+      label="Mata Kuliah"
     ></v-select>
     <v-text-field v-model="editedItem.judul" label="Judul Kuis"></v-text-field>
     <!--datepicker-->
@@ -174,8 +174,9 @@
 import axios from 'axios'
 export default {
   data: () => ({
-    // datepicker
     daftarMatakuliah: [],
+
+    // datepicker
     date: new Date().toISOString().substr(0, 10),
     modal: false,
     menuDate: false,
@@ -196,19 +197,7 @@ export default {
     },
 
     // expansion panels
-    lines: [
-      // {
-      //   kuliah: '',
-      //   tipe: '',
-      //   pertanyaan: '',
-      //   jawaban1: '',
-      //   jawaban2: '',
-      //   jawaban3: '',
-      //   jawaban4: '',
-      //   kunci: '',
-      //   bobot: ''
-      // }
-    ],
+    lines: [],
     blockRemoval: true
   }),
   mounted() {
@@ -220,12 +209,6 @@ export default {
       console.log(this.matakuliah)
     })
   },
-  // created() {
-  //   axios.get('http://localhost:8000/kuis/cari_all').then((resp) => {
-  //     this.soal = resp.data
-  //     console.log(this.soal)
-  //   })
-  // },
 
   methods: {
     getValueRadioGrup(v) {
@@ -279,7 +262,7 @@ export default {
       })
       axios.post('http://localhost:8000/kuis', data).then((resp) => {
         console.log(this.lines)
-      })
+      })((window.location = 'daftar'))
     }
   }
 }

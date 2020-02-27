@@ -5,10 +5,10 @@
         <v-img src="/user.png" />
       </v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-title class="subtitle-1 font-weight-bold">{{
-          email
-        }}</v-list-item-title>
-        <v-list-item-subtitle>Dosen</v-list-item-subtitle>
+        <v-list-item-title class="subtitle-1 font-weight-bold">
+          {{ email }}
+        </v-list-item-title>
+        <!-- <v-list-item-subtitle>Dosen</v-list-item-subtitle> -->
       </v-list-item-content>
     </v-list-item>
     <v-list-item>
@@ -49,13 +49,11 @@
           </v-list-item-content>
         </v-list-item>
       </v-list-group>
-      <v-list-item>
+      <v-list-item @click="logout">
         <v-list-item-icon>
           <v-icon>mdi-logout</v-icon>
         </v-list-item-icon>
-        <v-list-item-title>
-          <v-btn @click="logout">Keluar</v-btn>
-        </v-list-item-title>
+        <v-list-item-title>Keluar</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
@@ -76,7 +74,7 @@ export default {
       },
       {
         action: 'mdi-forum',
-        title: 'Kuis Online (Mhs)',
+        title: 'Kuis Online',
         isShown: this.$auth.user.role === '2',
         items: [
           { title: 'Data Kuis', link: '/quiz-mahasiswa/data' },
@@ -87,11 +85,7 @@ export default {
         action: 'mdi-comment-question-outline',
         title: 'Bank Soal',
         isShown: this.$auth.user.role === '1',
-        items: [
-          { title: 'Daftar Bank Soal', link: '/banksoal/daftar' },
-          { title: 'Pilihan Ganda', link: '/banksoal/pilihanganda' },
-          { title: 'Essay', link: '/banksoal/essay' }
-        ]
+        items: [{ title: 'Daftar Bank Soal', link: '/banksoal/daftar' }]
       }
     ]
     return {
@@ -106,23 +100,9 @@ export default {
   methods: {
     logout() {
       console.log(this.$auth.user)
+      localStorage.clear()
       this.$auth.logout()
       window.location = 'http://localhost:3000/login'
-      // axios
-      //   .post(
-      //     'http://localhost:8000/user/me/logout',
-      //     {},
-      //     {
-      //       headers: {
-      //         Authorization:
-      //           'Bearer ' +
-      //           this.$auth.user.tokens[this.$auth.user.tokens.length - 1].token
-      //       }
-      //     }
-      //   )
-      //   .then((resp) => {
-      //     window.location = 'http://localhost:3000/login'
-      //   })
     }
   }
 }

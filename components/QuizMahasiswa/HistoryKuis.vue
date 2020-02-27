@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in desserts" :key="item.name">
+        <tr v-for="item in hasil" :key="item.name">
           <td>{{ item.kuis.judul }}</td>
           <td>{{ item.kuis.date_created }}</td>
           <td>{{ item.kuis.creator.nama }}</td>
@@ -25,15 +25,15 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      desserts: []
+      hasil: []
     }
   },
   mounted() {
     axios
       .get('http://localhost:8000/hasil/cari_all?user=' + this.$auth.user._id)
       .then((resp) => {
-        this.desserts = resp.data
-        console.log(this.desserts)
+        this.hasil = resp.data
+        console.log(this.hasil)
       })
   }
 }

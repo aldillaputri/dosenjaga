@@ -1,7 +1,7 @@
 <template>
   <v-card class="pa-5">
     <v-form ref="form" v-model="valid" lazy-validation>
-      <div><v-icon>mdi-comment-question-outline</v-icon>Bank Soal</div>
+      <div><v-icon>mdi-comment-question-outline</v-icon>&nbsp;Bank Soal</div>
 
       <!-- Mata Kuliah -->
       <v-col>
@@ -38,6 +38,7 @@
                     <v-text-field
                       v-model="line.soal"
                       label="Pertanyaan"
+                      :rules="[(v) => !!v || 'Pertanyaan harus diisi']"
                     ></v-text-field>
                   </v-col>
                   <v-divider vertical class="mx-4"></v-divider>
@@ -45,15 +46,77 @@
                     <v-text-field
                       v-model="line.poin"
                       label="Poin"
+                      :rules="[(v) => !!v || 'Poin harus diisi']"
                     ></v-text-field>
                   </v-col>
                 </v-row>
                 <v-row>
                   <v-col>
                     <v-text-field
-                      v-model="line.jawaban"
+                      v-model="line.jawaban1"
+                      label="Jawaban"
+                      :rules="[(v) => !!v || 'Jawaban harus diisi']"
+                    ></v-text-field>
+                  </v-col>
+                  <v-divider vertical class="mx-4"></v-divider>
+                  <v-col cols="3">
+                    <v-checkbox
+                      v-model="line.checkbox1"
+                      label="Jawaban Benar"
+                      hide-details
+                      class="shrink mr-2 mt-0"
+                    ></v-checkbox>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-text-field
+                      v-model="line.jawaban2"
                       label="Jawaban"
                     ></v-text-field>
+                  </v-col>
+                  <v-divider vertical class="mx-4"></v-divider>
+                  <v-col cols="3">
+                    <v-checkbox
+                      v-model="line.checkbox2"
+                      label="Jawaban Benar"
+                      hide-details
+                      class="shrink mr-2 mt-0"
+                    ></v-checkbox>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-text-field
+                      v-model="line.jawaban3"
+                      label="Jawaban"
+                    ></v-text-field>
+                  </v-col>
+                  <v-divider vertical class="mx-4"></v-divider>
+                  <v-col cols="3">
+                    <v-checkbox
+                      v-model="line.checkbox3"
+                      label="Jawaban Benar"
+                      hide-details
+                      class="shrink mr-2 mt-0"
+                    ></v-checkbox>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-text-field
+                      v-model="line.jawaban4"
+                      label="Jawaban"
+                    ></v-text-field>
+                  </v-col>
+                  <v-divider vertical class="mx-4"></v-divider>
+                  <v-col cols="3">
+                    <v-checkbox
+                      v-model="line.checkbox4"
+                      label="Jawaban Benar"
+                      hide-details
+                      class="shrink mr-2 mt-0"
+                    ></v-checkbox>
                   </v-col>
                 </v-row>
                 <v-card-actions>
@@ -79,7 +142,7 @@
           <v-spacer></v-spacer>
           <v-btn color="error" to="/">Cancel</v-btn>
           <v-btn color="normal" @click="reset">Reset</v-btn>
-          <v-btn color="success" @click="validate">Create</v-btn>
+          <v-btn color="success" @click="submit()">Create</v-btn>
         </v-card-actions>
       </v-container>
     </v-form>
@@ -122,9 +185,9 @@ export default {
   }),
 
   methods: {
-    validate() {
+    submit() {
       if (this.$refs.form.validate()) {
-        this.snackbar = true
+        this.$store.dispatch('')
       }
     },
     reset() {
@@ -141,7 +204,14 @@ export default {
       this.lines.push({
         soal: null,
         poin: null,
-        jawaban: null
+        jawaban1: null,
+        jawaban2: null,
+        jawaban3: null,
+        jawaban4: null,
+        checkbox1: null,
+        checkbox2: null,
+        checkbox3: null,
+        checkbox4: null
       })
     },
     removeQuestion(lineId) {
