@@ -181,7 +181,7 @@ export default {
         sortable: false,
         value: 'pertanyaan'
       },
-      { text: 'Matakuliah', value: 'matakuliah.matkul' },
+      // { text: 'Matakuliah', value: 'matakuliah.matkul' },
       { text: 'Tipe', value: 'tipe' },
       { text: 'A', value: 'jawaban1' },
       { text: 'B', value: 'jawaban2' },
