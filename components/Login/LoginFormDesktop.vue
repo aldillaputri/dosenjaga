@@ -50,15 +50,26 @@ export default {
     }
   },
   methods: {
+    loginn: (e) => {
+      alert('abc')
+      console.log('abcd')
+    },
     login(e) {
       // console.log('abcd')
       e.preventDefault()
-      this.$auth.loginWith('local', {
-        data: {
-          email: this.userData.email,
-          password: this.userData.password
-        }
-      })
+      this.$auth
+        .loginWith('local', {
+          data: {
+            email: this.userData.email,
+            password: this.userData.password
+          }
+        })
+        .then((resp) => {
+          window.location.href = '/'
+        })
+
+      // window.location.href = '/'
+      // alert('aaaaaaaaaaaa')
       // console.log(this)
       // console.log(this.userData)
       // const email = ''
