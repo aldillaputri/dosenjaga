@@ -23,7 +23,7 @@
           </v-btn>
           <!-- <v-btn icon color="error">
             <v-icon>mdi-delete</v-icon>
-          </v-btn> -->
+          </v-btn>-->
         </v-card-actions>
       </v-card>
     </v-col>
@@ -38,10 +38,13 @@ export default {
     cards: []
   }),
   created() {
-    axios.get('http://localhost:8000/kuis/cari_all').then((resp) => {
-      this.cards = resp.data
-      console.log(this.cards)
-    })
+    axios
+      .get('http://localhost:8000/kuis/cari_all?user=' + this.$auth.user.nomor)
+      .then((resp) => {
+        console.log(resp.data)
+        this.cards = resp.data
+        console.log(this.cards)
+      })
   }
 }
 </script>

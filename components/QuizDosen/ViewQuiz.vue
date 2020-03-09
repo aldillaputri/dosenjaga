@@ -38,7 +38,7 @@ export default {
   mounted() {
     let params = ''
     if (this.$auth.user.role === 1) {
-      params = '?user=' + this.$auth.user._id
+      params = '?user=' + this.$auth.user.nomor
     }
     axios.get('http://localhost:8000/hasil/cari_all' + params).then((resp) => {
       this.hasil = resp.data

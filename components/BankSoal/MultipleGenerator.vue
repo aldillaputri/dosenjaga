@@ -5,7 +5,7 @@
       v-model="editedItem.kuliah"
       :items="daftarMatakuliah"
       item-text="matkul"
-      item-value="_id"
+      item-value="nomor"
       label="Mata Kuliah"
     ></v-select>
 
@@ -163,7 +163,7 @@ export default {
   }),
   mounted() {
     // this.addLine()
-    this.editedItem.creator = this.$auth.user._id
+    this.editedItem.creator = this.$auth.user.nomor
     axios.get('http://localhost:8000/matakuliah/cari_all').then((resp) => {
       this.daftarMatakuliah = resp.data
 
@@ -218,7 +218,7 @@ export default {
       data.pertanyaans.forEach((element, idx) => {
         data.pertanyaans[idx].matakuliah = data.kuliah
         if (data.pertanyaans[idx].creator === undefined) {
-          data.pertanyaans[idx].creator = this.$auth.user._id
+          data.pertanyaans[idx].creator = this.$auth.user.nomor
         }
       })
       axios.post('http://localhost:8000/kuis', data).then((resp) => {

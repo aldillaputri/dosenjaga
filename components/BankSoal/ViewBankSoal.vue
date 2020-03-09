@@ -256,7 +256,7 @@ export default {
         'http://localhost:8000/soal/cari_all?matakuliah=' +
           this.$route.query.matakuliah +
           '&user=' +
-          this.$auth.user._id
+          this.$auth.user.nomor
       )
       .then((resp) => {
         this.soal = resp.data
@@ -268,13 +268,13 @@ export default {
     initialize() {
       this.editedItemPilgan.tipe = 'Pilihan Ganda'
       this.defaultItemPilgan.tipe = 'Pilihan Ganda'
-      this.editedItemPilgan.creator = this.$auth.user._id
-      this.defaultItemPilgan.creator = this.$auth.user._id
+      this.editedItemPilgan.creator = this.$auth.user.nomor
+      this.defaultItemPilgan.creator = this.$auth.user.nomor
 
       this.editedItemEssay.tipe = 'Essay'
       this.defaultItemEssay.tipe = 'Essay'
-      this.editedItemEssay.creator = this.$auth.user._id
-      this.defaultItemEssay.creator = this.$auth.user._id
+      this.editedItemEssay.creator = this.$auth.user.nomor
+      this.defaultItemEssay.creator = this.$auth.user.nomor
 
       this.soal = []
     },

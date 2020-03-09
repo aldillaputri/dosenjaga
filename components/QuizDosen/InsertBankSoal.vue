@@ -3,13 +3,6 @@
     <div class="ma-5">
       <v-icon>mdi-plus-circle</v-icon>&nbsp;Tambah Dari Bank Soal
     </div>
-    <v-overflow-btn
-      class="my-2"
-      :items="dropdown_edit"
-      label="Cari Mata Kuliah..."
-      editable
-      item-value="text"
-    ></v-overflow-btn>
 
     <v-row dense>
       <v-col v-for="(item, i) in items" :key="i" cols="12">

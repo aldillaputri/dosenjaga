@@ -6,7 +6,7 @@
         <v-card-text v-text="card.tipe"></v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn icon :to="link + '?matakuliah=' + card._id">
+          <v-btn icon :to="link + '?matakuliah=' + card.nomor">
             <v-icon color="info">mdi-eye</v-icon>
           </v-btn>
           <v-btn icon color="error">
@@ -33,7 +33,7 @@ export default {
   }),
   mounted() {
     // this.addLine()
-    this.editedItem.creator = this.$auth.user._id
+    this.editedItem.creator = this.$auth.user.nomor
     axios.get('http://localhost:8000/matakuliah/cari_all').then((resp) => {
       this.daftarMatakuliah = resp.data
       this.cards = resp.data

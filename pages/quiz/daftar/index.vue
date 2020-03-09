@@ -9,18 +9,21 @@
       </v-col>
     </v-row>
     <v-row>
+      <filter-kuliah></filter-kuliah>
+    </v-row>
+    <v-row>
       <card-quiz></card-quiz>
     </v-row>
   </v-card>
 </template>
 
 <script>
-// import DropDownMatkul from '~/components/QuizDosen/DropDownMatkul.vue'
 import CardQuiz from '~/components/QuizDosen/CardQuiz.vue'
 import ButtonCreateQuiz from '~/components/QuizDosen/ButtonCreateQuiz.vue'
+import FilterKuliah from '~/components/QuizDosen/FilterKuliah.vue'
 export default {
   components: {
-    // DropDownMatkul,
+    FilterKuliah,
     CardQuiz,
     ButtonCreateQuiz
   }

@@ -30,7 +30,7 @@ export default {
   },
   mounted() {
     axios
-      .get('http://localhost:8000/hasil/cari_all?user=' + this.$auth.user._id)
+      .get('http://localhost:8000/hasil/cari_all?user=' + this.$auth.user.nomor)
       .then((resp) => {
         this.hasil = resp.data
         console.log(this.hasil)

@@ -3,10 +3,10 @@
     <div><v-icon>mdi-forum</v-icon>&nbsp;Deskripsi Kuis</div>
     <v-select
       v-model="editedItem.kuliah"
-      :items="daftarMatakuliah"
-      item-text="matkul"
-      item-value="_id"
-      label="Mata Kuliah"
+      :items="kuliah"
+      item-text="matakuliah.matkul"
+      item-value="nomor"
+      label="Kuliah"
     ></v-select>
     <v-text-field v-model="editedItem.judul" label="Judul Kuis"></v-text-field>
     <!--datepicker-->
@@ -62,6 +62,18 @@
               </template>
             </v-expansion-panel-header>
             <v-expansion-panel-content>
+              <v-row id="row-">
+                <v-col>
+                  <v-file-input
+                    v-if="line.tipe == 'Pilihan Ganda' || 'Essay'"
+                    v-model="line.gambar"
+                    show-size
+                    counter
+                    multiple
+                    label="Tambahkan Gambar"
+                  ></v-file-input>
+                </v-col>
+              </v-row>
               <v-row id="row-">
                 <v-col>
                   <v-text-field
@@ -174,7 +186,17 @@
 import axios from 'axios'
 export default {
   data: () => ({
-    daftarMatakuliah: [],
+    kuliah: [],
+    // matakuliah: [
+    //   {
+    //     nomor: 1,
+    //     nama: 'Konsep Pemrograman'
+    //   },
+    //   {
+    //     nomor: 2,
+    //     nama: 'Basis Data'
+    //   }
+    // ],
 
     // datepicker
     date: new Date().toISOString().substr(0, 10),
@@ -202,12 +224,15 @@ export default {
   }),
   mounted() {
     // this.addLine()
-    this.editedItem.creator = this.$auth.user._id
-    axios.get('http://localhost:8000/matakuliah/cari_all').then((resp) => {
-      this.daftarMatakuliah = resp.data
-
-      console.log(this.matakuliah)
-    })
+    this.editedItem.creator = this.$auth.user.nomor
+    axios
+      .get(
+        'http://localhost:8000/kuliah/cari_all?user=' + this.$auth.user.nomor
+      )
+      .then((resp) => {
+        this.kuliah = resp.data
+        console.log(this.matakuliah)
+      })
   },
 
   methods: {
@@ -250,6 +275,7 @@ export default {
     },
 
     save() {
+      console.log('---------------------------------aaaaaaa')
       this.soal.push(this.editedItem)
       // this.close()
       const data = { ...this.editedItem }
@@ -257,7 +283,7 @@ export default {
       data.pertanyaans.forEach((element, idx) => {
         data.pertanyaans[idx].matakuliah = data.kuliah
         if (data.pertanyaans[idx].creator === undefined) {
-          data.pertanyaans[idx].creator = this.$auth.user._id
+          data.pertanyaans[idx].creator = this.$auth.user.nomor
         }
       })
       axios.post('http://localhost:8000/kuis', data).then((resp) => {

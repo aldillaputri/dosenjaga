@@ -99,7 +99,7 @@ export default {
         'http://localhost:8000/kuis/cari_all?_id=' +
           this.$route.query.kuis +
           '&user=' +
-          this.$auth.user._id
+          this.$auth.user.nomor
       )
       .then((resp) => {
         console.log(resp.data)
@@ -129,7 +129,7 @@ export default {
       axios
         .post('http://localhost:8000/hasil/hitung', {
           soal: this.soal,
-          user: this.$auth.user._id,
+          user: this.$auth.user.nomor,
           kuis: this.$route.query.kuis
         })
         .then((resp) => {
