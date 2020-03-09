@@ -7,23 +7,27 @@
         :items="dropdown_edit"
         label="Kuliah"
         editable
-        item-value="text"
+        item-value="nomor"
+        item-text="matakuliah.matkul"
       ></v-overflow-btn>
     </v-col>
   </v-row>
 </template>
 <script>
+import axios from 'axios'
+
 export default {
   data: () => ({
-    dropdown_edit: [
-      { text: 'Keamanan Jaringan' },
-      { text: 'Basis Data' },
-      { text: 'Pemrograman Framework' },
-      { text: 'Agama' },
-      { text: 'Bahasa Inggris' },
-      { text: 'Pendidikan Kewarganegaraan' },
-      { text: 'Metodologi Riset' }
-    ]
-  })
+    dropdown_edit: []
+  }),
+  mounted() {
+    axios
+      .get(
+        'http://localhost:8000/kuliah/cari_all?user=' + this.$auth.user.nomor
+      )
+      .then((resp) => {
+        this.dropdown_edit = resp.data
+      })
+  }
 }
 </script>

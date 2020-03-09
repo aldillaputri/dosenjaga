@@ -8,9 +8,9 @@
         <button-create-quiz></button-create-quiz>
       </v-col>
     </v-row>
-    <v-row>
+    <!-- <v-row>
       <filter-kuliah></filter-kuliah>
-    </v-row>
+    </v-row>-->
     <v-row>
       <card-quiz></card-quiz>
     </v-row>
@@ -20,10 +20,10 @@
 <script>
 import CardQuiz from '~/components/QuizDosen/CardQuiz.vue'
 import ButtonCreateQuiz from '~/components/QuizDosen/ButtonCreateQuiz.vue'
-import FilterKuliah from '~/components/QuizDosen/FilterKuliah.vue'
+// import FilterKuliah from '~/components/QuizDosen/FilterKuliah.vue'
 export default {
   components: {
-    FilterKuliah,
+    // FilterKuliah,
     CardQuiz,
     ButtonCreateQuiz
   }

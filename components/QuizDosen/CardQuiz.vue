@@ -1,5 +1,16 @@
 <template>
   <v-row>
+    <v-col :cols="12">
+      <v-overflow-btn
+        class="my-2"
+        :items="dropdown_edit"
+        label="Kuliah"
+        editable
+        item-value="nomor"
+        item-text="matakuliah.matkul"
+        @change="filter_result"
+      ></v-overflow-btn>
+    </v-col>
     <v-col v-for="card in cards" :key="card.judul" :cols="3">
       <v-card outlined>
         <v-card-title class="subtitle-1" v-text="card.judul"></v-card-title>
@@ -35,9 +46,10 @@ export default {
   data: () => ({
     link: '/quiz/test',
     link2: '/quiz/view',
-    cards: []
+    cards: [],
+    dropdown_edit: []
   }),
-  created() {
+  mounted() {
     axios
       .get('http://localhost:8000/kuis/cari_all?user=' + this.$auth.user.nomor)
       .then((resp) => {
@@ -45,6 +57,30 @@ export default {
         this.cards = resp.data
         console.log(this.cards)
       })
+
+    axios
+      .get(
+        'http://localhost:8000/kuliah/cari_all?user=' + this.$auth.user.nomor
+      )
+      .then((resp) => {
+        this.dropdown_edit = resp.data
+      })
+  },
+  methods: {
+    filter_result(value) {
+      axios
+        .get(
+          'http://localhost:8000/kuis/cari_all?user=' +
+            this.$auth.user.nomor +
+            '&kuliah=' +
+            value
+        )
+        .then((resp) => {
+          console.log(resp.data)
+          this.cards = resp.data
+          console.log(this.cards)
+        })
+    }
   }
 }
 </script>
