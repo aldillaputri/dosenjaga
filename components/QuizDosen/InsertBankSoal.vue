@@ -11,7 +11,7 @@
             <div>
               <v-card-title
                 class="subtitle-2"
-                v-text="item.soal"
+                v-text="item.pertanyaan"
               ></v-card-title>
               <v-card-text class="caption" v-text="item.author"></v-card-text>
               <v-card-actions>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data: () => ({
     items: [
@@ -47,6 +48,13 @@ export default {
       { text: 'Pendidikan Kewarganegaraan' },
       { text: 'Metodologi Riset' }
     ]
-  })
+  }),
+  mounted() {
+    axios
+      .get('http://localhost:8000/soal/cari_all?user=' + this.$auth.user.nomor)
+      .then((resp) => {
+        this.items = resp.data
+      })
+  }
 }
 </script>

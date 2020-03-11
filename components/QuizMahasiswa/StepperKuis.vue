@@ -96,10 +96,9 @@ export default {
   mounted() {
     axios
       .get(
-        'http://localhost:8000/kuis/cari_all?_id=' +
-          this.$route.query.kuis +
-          '&user=' +
-          this.$auth.user.nomor
+        'http://localhost:8000/kuis/cari_all?_id=' + this.$route.query.kuis
+        // '&user=' +
+        // this.$auth.user.nomor
       )
       .then((resp) => {
         console.log(resp.data)
