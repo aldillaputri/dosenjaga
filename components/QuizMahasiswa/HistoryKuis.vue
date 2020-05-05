@@ -1,40 +1,37 @@
 <template>
-  <v-simple-table fixed-header height="300px">
-    <template v-slot:default>
-      <thead>
-        <tr>
-          <th class="text-left">Kuis</th>
-          <th class="text-left">Tanggal</th>
-          <th class="text-left">Oleh</th>
-          <th class="text-left">Nilai</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in hasil" :key="item.name">
-          <td>{{ item.kuis.judul }}</td>
-          <td>{{ item.kuis.date_created }}</td>
-          <td>{{ item.kuis.creator.nama }}</td>
-          <td>{{ item.nilai }}</td>
-        </tr>
-      </tbody>
-    </template>
-  </v-simple-table>
+  <v-row>
+    <!-- Mata Kuliah -->
+    <v-col v-for="card in cards" :key="card.judul" :cols="3">
+      <v-card>
+        <v-card-title class="subtitle-1" v-text="card.judul"></v-card-title>
+        <v-card-text v-text="card.date_created"></v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            :loading="loading3"
+            :disabled="loading3"
+            color="primary"
+            class="ma-2 white--text"
+            to="history/detail"
+            >Detail</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 <script>
 import axios from 'axios'
 export default {
-  data() {
-    return {
-      hasil: []
-    }
-  },
-  mounted() {
-    axios
-      .get('http://localhost:8000/hasil/cari_all?user=' + this.$auth.user.nomor)
-      .then((resp) => {
-        this.hasil = resp.data
-        console.log(this.hasil)
-      })
+  data: () => ({
+    link: '/quiz-mahasiswa/join',
+    cards: []
+  }),
+  created() {
+    axios.get('http://localhost:8000/kuis/cari_all').then((resp) => {
+      this.cards = resp.data
+      console.log(this.cards)
+    })
   }
 }
 </script>

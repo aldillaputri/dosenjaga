@@ -2,7 +2,7 @@
   <v-row>
     <v-col cols="5">
       <v-form id="form-tambah-soal" ref="form" lazy-validation>
-        <div><v-icon>mdi-forum</v-icon>&nbsp;Deskripsi Kuis</div>
+        <div><v-icon>mdi-forum</v-icon>&nbsp;Buat Kuis</div>
         <v-select
           v-model="form.kuliah"
           :items="kuliah"
@@ -158,6 +158,7 @@
             >Tambah Soal</v-btn
           >
         </v-col>
+        <v-checkbox v-model="form.isPublished" label="Publish"></v-checkbox>
 
         <v-card-actions>
           <b>Total Point:</b>
@@ -213,7 +214,8 @@ export default {
       judul: '',
       date_created: '',
       durasi: '',
-      creator: null
+      creator: null,
+      isPublished: false
     },
     // expansion panels
     lines: [],

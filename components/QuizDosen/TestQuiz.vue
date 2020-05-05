@@ -56,12 +56,15 @@
         </v-stepper-content>
       </template>
     </v-stepper>
-    <v-btn color="primary" @click="dialog = false">Submit</v-btn>
+    <v-btn color="primary" @click.stop="dialog = true">Submit</v-btn>
     <v-dialog v-model="dialog" max-width="290">
       <v-card>
         <v-card-title class="headline">Berhasil!</v-card-title>
 
-        <v-card-text>Kuis sudah siap dipublish.</v-card-text>
+        <v-card-text>
+          <p>Skor 100!</p>
+          <p>Kuis sudah siap dipublish.</p>
+        </v-card-text>
 
         <v-card-actions>
           <v-btn color="green darken-1" text @click="dialog = false">OK</v-btn>

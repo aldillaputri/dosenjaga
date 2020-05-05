@@ -1,58 +1,38 @@
 <template>
   <div>
-    <v-stepper v-model="e1" non-linear vertical>
-      <template v-for="(j, n) in jawaban">
-        <v-stepper-step :key="`${n}-step`" :complete="e1 > n" :step="n" editable
-          >Soal {{ n + 1 }}</v-stepper-step
+    <v-data-table :headers="headers" :items="data_jawaban">
+      <template v-slot:item.skor="props">
+        <v-edit-dialog
+          :return-value.sync="props.item.skor"
+          large
+          persistent
+          @save="save"
+          @cancel="cancel"
+          @open="open"
+          @close="close"
         >
-        <v-stepper-content :key="`${n}-content`" :step="n">
-          <v-card class="mb-12" outlined>
-            <v-row>
-              <v-col class="ml-3 mr-3">
-                <v-text-field v-model="j.pertanyaan.pertanyaan" readonly>
-                  <p class="text ml-3"></p>
-                </v-text-field>
-              </v-col>
-            </v-row>
-            <div class="ml-3">
-              <v-checkbox
-                v-if="j.pertanyaan.tipe === 'Pilihan Ganda'"
-                v-model="jawaban[n]"
-                :label="j.pertanyaan.jawaban1"
-                value="A"
-              ></v-checkbox>
-              <v-checkbox
-                v-if="j.pertanyaan.tipe === 'Pilihan Ganda'"
-                v-model="jawaban[n]"
-                :label="j.pertanyaan.jawaban2"
-                value="B"
-              ></v-checkbox>
-              <v-checkbox
-                v-if="j.pertanyaan.tipe === 'Pilihan Ganda'"
-                v-model="jawaban[n]"
-                :label="j.pertanyaan.jawaban3"
-                value="C"
-              ></v-checkbox>
-              <v-checkbox
-                v-if="j.pertanyaan.tipe === 'Pilihan Ganda'"
-                v-model="jawaban[n]"
-                :label="j.pertanyaan.jawaban4"
-                value="D"
-              ></v-checkbox>
-              <v-text-field
-                v-if="j.pertanyaan.tipe === 'Essay'"
-                v-model="j.jawabanEssayUser"
-              >
-                <p class="text ml-3"></p>
-              </v-text-field>
-            </div>
-          </v-card>
-          <v-btn color="primary" @click="nextStep(n)">Continue</v-btn>
-          <v-btn text>Cancel</v-btn>
-        </v-stepper-content>
+          <div>{{ props.item.skor }}</div>
+          <template v-slot:input>
+            <div class="mt-4 title">Update.skor</div>
+          </template>
+          <template v-slot:input>
+            <v-text-field
+              v-model="props.item.skor"
+              :rules="[max25chars]"
+              label="Edit"
+              single-line
+              counter
+              autofocus
+            ></v-text-field>
+          </template>
+        </v-edit-dialog>
       </template>
-    </v-stepper>
-    <v-btn color="primary" @click="submit()">Submit</v-btn>
+    </v-data-table>
+
+    <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
+      {{ snackText }}
+      <v-btn text @click="snack = false">Close</v-btn>
+    </v-snackbar>
   </div>
 </template>
 
@@ -61,33 +41,32 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      e1: 1,
-      // soals: 10,
-      vertical: false,
-      altLabels: false,
-      editable: true,
-      // jawaban: [],
-      jawaban: [
+      snack: false,
+      snackColor: '',
+      snackText: '',
+      max25chars: (v) => v.length <= 25 || 'Input too long!',
+      pagination: {},
+      headers: [
+        { text: 'No.', value: 'no' },
+        { text: 'Soal', value: 'soal' },
+        { text: 'Jawaban Mahasiswa', value: 'jawaban_mhs' },
+        { text: 'Kunci Jawaban', value: 'kunci_jawaban' },
         {
-          kuis: '',
-          pertanyaan: '',
-          jawaban1: '',
-          jawaban2: '',
-          jawaban3: '',
-          jawaban4: ''
+          text: 'Skor (Editable)',
+          align: 'start',
+          sortable: false,
+          value: 'skor'
+        }
+      ],
+      data_jawaban: [
+        {
+          no: 1,
+          soal: 'Soal nomor 1',
+          jawaban_mhs: 'Jawaban Mahasiswa ABCDEFGKHJSKJ',
+          kunci_jawaban: 'Kunci Jawaban 12387428o6',
+          skor: 15
         }
       ]
-    }
-  },
-  watch: {
-    steps(val) {
-      if (this.e1 > val) {
-        this.e1 = val
-      }
-    },
-    vertical() {
-      this.e1 = 2
-      requestAnimationFrame(() => (this.e1 = 1)) // Workarounds
     }
   },
   mounted() {
@@ -98,17 +77,24 @@ export default {
         this.jawaban = resp.data.jawaban
       })
   },
-
   methods: {
-    onInput(val) {
-      this.steps = parseInt(val)
+    save() {
+      this.snack = true
+      this.snackColor = 'success'
+      this.snackText = 'Data saved'
     },
-    nextStep(n) {
-      if (n === this.steps) {
-        this.e1 = 1
-      } else {
-        this.e1 = n + 1
-      }
+    cancel() {
+      this.snack = true
+      this.snackColor = 'error'
+      this.snackText = 'Canceled'
+    },
+    open() {
+      this.snack = true
+      this.snackColor = 'info'
+      this.snackText = 'Dialog opened'
+    },
+    close() {
+      console.log('Dialog closed')
     }
   }
 }

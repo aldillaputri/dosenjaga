@@ -5,9 +5,9 @@
         <v-img src="/user.png" />
       </v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-title class="subtitle-1 font-weight-bold">
-          {{ email }}
-        </v-list-item-title>
+        <v-list-item-title class="subtitle-1 font-weight-bold">{{
+          email
+        }}</v-list-item-title>
         <!-- <v-list-item-subtitle>Dosen</v-list-item-subtitle> -->
       </v-list-item-content>
     </v-list-item>

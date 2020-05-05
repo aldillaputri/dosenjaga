@@ -5,7 +5,9 @@
         <v-icon>mdi-file-multiple</v-icon>&nbsp; Hasil Kuis
       </v-col>
       <v-col right cols="3">
-        <button-back></button-back>
+        <v-btn color="primary" class="white--text">
+          <v-icon left dark>mdi-backup-restore</v-icon>Publish Nilai
+        </v-btn>
       </v-col>
     </v-row>
     <v-row>
@@ -18,11 +20,9 @@
 
 <script>
 import ViewQuiz from '~/components/QuizDosen/ViewQuiz.vue'
-import ButtonBack from '~/components/QuizDosen/ButtonBack.vue'
 export default {
   components: {
-    ViewQuiz,
-    ButtonBack
+    ViewQuiz
   }
 }
 </script>

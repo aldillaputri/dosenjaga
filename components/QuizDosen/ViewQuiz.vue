@@ -17,7 +17,8 @@
           <td>{{ item.nilai }}</td>
           <td>Tidak Lulus</td>
           <td>
-            <v-btn icon :to="link + '?hasil=' + item._id">
+            <!-- <v-btn icon :to="link + '?hasil=' + item._id"> -->
+            <v-btn icon :to="link">
               <v-icon color="info">mdi-eye</v-icon>
             </v-btn>
           </td>
@@ -31,7 +32,7 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      link: 'detail',
+      link: '/quiz/detail',
       hasil: []
     }
   },

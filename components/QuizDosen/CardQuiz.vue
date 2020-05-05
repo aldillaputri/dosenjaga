@@ -4,7 +4,7 @@
       <v-overflow-btn
         class="my-2"
         :items="dropdown_edit"
-        label="Kuliah"
+        label="Filter Berdasarkan Kuliah"
         editable
         item-value="nomor"
         item-text="matakuliah.matkul"
@@ -24,17 +24,22 @@
                 >
               </div>
             </v-col>
+
+            <v-col class="text-center" cols="12" sm="4">
+              <div v-if="card.isPublished === false" class="my-2">
+                <v-btn small color="warning" :to="link + '?kuis=' + card._id"
+                  >Publish</v-btn
+                >
+              </div>
+            </v-col>
           </v-row>
           <v-spacer></v-spacer>
           <v-btn icon :to="link2">
             <v-icon color="info">mdi-eye</v-icon>
           </v-btn>
-          <v-btn icon color="secondary">
+          <v-btn icon color="secondary" :to="link3">
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
-          <!-- <v-btn icon color="error">
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>-->
         </v-card-actions>
       </v-card>
     </v-col>
@@ -46,8 +51,11 @@ export default {
   data: () => ({
     link: '/quiz/test',
     link2: '/quiz/view',
+    link3: '/quiz/edit',
     cards: [],
-    dropdown_edit: []
+    dropdown_edit: [],
+    isPublished: false,
+    items: [{ title: 'Test' }, { title: 'Edit' }, { title: 'Detail' }]
   }),
   mounted() {
     axios
