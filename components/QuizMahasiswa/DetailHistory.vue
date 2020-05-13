@@ -1,6 +1,39 @@
 <template>
   <div>
-    <v-data-table :headers="headers" :items="data_jawaban"></v-data-table>
+    <v-row>
+      <v-col cols="9">
+        <v-icon>mdi-file-multiple</v-icon>&nbsp; Detail Jawaban Anda
+      </v-col>
+      <v-col right cols="3">
+        <v-btn color="primary" class="white--text" to="/quiz-mahasiswa/history">
+          <v-icon left dark>mdi-backup-restore</v-icon>Kembali
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="pa-5">
+        <detail-hasil-quiz></detail-hasil-quiz>
+      </v-col>
+    </v-row>
+    <v-simple-table fixed-header height="300px">
+      <template v-slot:default>
+        <thead>
+          <tr>
+            <th class="text-left">Soal</th>
+            <th class="text-left">Jawaban Anda</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in detail.jawaban" :key="item._id">
+            <td>{{ item.pertanyaan.pertanyaan }}</td>
+            <td v-if="item.pertanyaan.tipe === 'Essay'">
+              {{ item.jawabanEssay }}
+            </td>
+            <td v-else>{{ item.jawabanPilgan }}</td>
+          </tr>
+        </tbody>
+      </template>
+    </v-simple-table>
   </div>
 </template>
 
@@ -9,34 +42,15 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      snack: false,
-      pagination: {},
-      headers: [
-        { text: 'No.', value: 'no' },
-        { text: 'Soal', value: 'soal' },
-        { text: 'Jawaban Anda', value: 'jawaban_mhs' },
-        { text: 'Kunci Jawaban', value: 'kunci_jawaban' },
-        { text: 'Skor', value: 'skor' }
-      ],
-      data_jawaban: [
-        {
-          no: 1,
-          soal: 'Soal nomor 1',
-          jawaban_mhs: 'Jawaban Mahasiswa ABCDEFGKHJSKJ',
-          kunci_jawaban: 'Kunci Jawaban 12387428o6',
-          skor: 15
-        }
-      ]
+      detail: { jawaban: [], user: { nama: '' } }
     }
   },
   mounted() {
     axios
       .get('http://localhost:8000/hasil/cari/' + this.$route.query.hasil)
       .then((resp) => {
-        console.log(resp.data)
-        this.jawaban = resp.data.jawaban
+        this.detail = resp.data
       })
-  },
-  methods: {}
+  }
 }
 </script>

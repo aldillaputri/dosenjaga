@@ -1,38 +1,47 @@
 <template>
   <div>
-    <v-data-table :headers="headers" :items="data_jawaban">
-      <template v-slot:item.skor="props">
-        <v-edit-dialog
-          :return-value.sync="props.item.skor"
-          large
-          persistent
-          @save="save"
-          @cancel="cancel"
-          @open="open"
-          @close="close"
-        >
-          <div>{{ props.item.skor }}</div>
-          <template v-slot:input>
-            <div class="mt-4 title">Update.skor</div>
-          </template>
-          <template v-slot:input>
-            <v-text-field
-              v-model="props.item.skor"
-              :rules="[max25chars]"
-              label="Edit"
-              single-line
-              counter
-              autofocus
-            ></v-text-field>
-          </template>
-        </v-edit-dialog>
+    <v-row>
+      <v-col cols="9">
+        <v-icon>mdi-file-multiple</v-icon>
+        &nbsp; Detail Jawaban {{ detail.user.nama }}
+      </v-col>
+      <v-col right cols="3">
+        <v-btn color="primary" class="white--text" to="/quiz/view">
+          <v-icon left dark>mdi-backup-restore</v-icon>Kembali
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="pa-5">
+        <detail-hasil-quiz></detail-hasil-quiz>
+      </v-col>
+    </v-row>
+    <v-simple-table fixed-header height="300px">
+      <template v-slot:default>
+        <thead>
+          <tr>
+            <th class="text-left">Soal</th>
+            <th class="text-left">Jawaban Mahasiswa</th>
+            <th class="text-left">Kunci Jawaban</th>
+            <th class="text-left">Skor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in detail.jawaban" :key="item._id">
+            <td>{{ item.pertanyaan.pertanyaan }}</td>
+            <td v-if="item.pertanyaan.tipe === 'Essay'">
+              {{ item.jawabanEssay }}
+            </td>
+            <td v-else>{{ item.jawabanPilgan }}</td>
+            <td v-if="item.pertanyaan.tipe === 'Essay'">
+              {{ item.pertanyaan.jawaban1 }}
+            </td>
+            <td v-else>{{ item.pertanyaan.kunci }}</td>
+            <td>{{ item.nilai }}</td>
+          </tr>
+        </tbody>
       </template>
-    </v-data-table>
-
-    <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
-      {{ snackText }}
-      <v-btn text @click="snack = false">Close</v-btn>
-    </v-snackbar>
+    </v-simple-table>
   </div>
 </template>
 
@@ -41,61 +50,15 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      snack: false,
-      snackColor: '',
-      snackText: '',
-      max25chars: (v) => v.length <= 25 || 'Input too long!',
-      pagination: {},
-      headers: [
-        { text: 'No.', value: 'no' },
-        { text: 'Soal', value: 'soal' },
-        { text: 'Jawaban Mahasiswa', value: 'jawaban_mhs' },
-        { text: 'Kunci Jawaban', value: 'kunci_jawaban' },
-        {
-          text: 'Skor (Editable)',
-          align: 'start',
-          sortable: false,
-          value: 'skor'
-        }
-      ],
-      data_jawaban: [
-        {
-          no: 1,
-          soal: 'Soal nomor 1',
-          jawaban_mhs: 'Jawaban Mahasiswa ABCDEFGKHJSKJ',
-          kunci_jawaban: 'Kunci Jawaban 12387428o6',
-          skor: 15
-        }
-      ]
+      detail: { jawaban: [], user: { nama: '' } }
     }
   },
   mounted() {
     axios
       .get('http://localhost:8000/hasil/cari/' + this.$route.query.hasil)
       .then((resp) => {
-        console.log(resp.data)
-        this.jawaban = resp.data.jawaban
+        this.detail = resp.data
       })
-  },
-  methods: {
-    save() {
-      this.snack = true
-      this.snackColor = 'success'
-      this.snackText = 'Data saved'
-    },
-    cancel() {
-      this.snack = true
-      this.snackColor = 'error'
-      this.snackText = 'Canceled'
-    },
-    open() {
-      this.snack = true
-      this.snackColor = 'info'
-      this.snackText = 'Dialog opened'
-    },
-    close() {
-      console.log('Dialog closed')
-    }
   }
 }
 </script>

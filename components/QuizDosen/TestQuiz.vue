@@ -109,20 +109,6 @@ export default {
       requestAnimationFrame(() => (this.e1 = 1)) // Workarounds
     }
   },
-  // created() {
-  //   this.soal.kuis = this.$route.query.kuis
-  //   axios
-  //     .get(
-  //       'http://localhost:8000/kuis/cari_all?id=' +
-  //         this.$route.query.kuis +
-  //         '&user=' +
-  //         this.$auth.user._id
-  //     )
-  //     .then((resp) => {
-  //       this.kuis = resp.data
-  //       console.log(this.kuis)
-  //     })
-  // },
   mounted() {
     axios
       .get(

@@ -1,9 +1,12 @@
 <template>
   <v-row>
     <!-- Mata Kuliah -->
-    <v-col v-for="card in cards" :key="card.judul" :cols="3">
+    <v-col v-for="card in cards" :key="card.kuis.judul" :cols="3">
       <v-card>
-        <v-card-title class="subtitle-1" v-text="card.judul"></v-card-title>
+        <v-card-title
+          class="subtitle-1"
+          v-text="card.kuis.judul"
+        ></v-card-title>
         <v-card-text v-text="card.date_created"></v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -12,7 +15,7 @@
             :disabled="loading3"
             color="primary"
             class="ma-2 white--text"
-            to="history/detail"
+            :to="link2 + '?hasil=' + card._id"
             >Detail</v-btn
           >
         </v-card-actions>
@@ -25,13 +28,20 @@ import axios from 'axios'
 export default {
   data: () => ({
     link: '/quiz-mahasiswa/join',
+    link2: 'history/detail',
     cards: []
   }),
   created() {
-    axios.get('http://localhost:8000/kuis/cari_all').then((resp) => {
-      this.cards = resp.data
-      console.log(this.cards)
-    })
+    axios
+      .get(
+        'http://localhost:8000/hasil/cari_all?user=' +
+          this.$auth.user.nomor +
+          'isPublished=true'
+      )
+      .then((resp) => {
+        this.cards = resp.data
+        console.log(this.cards)
+      })
   }
 }
 </script>

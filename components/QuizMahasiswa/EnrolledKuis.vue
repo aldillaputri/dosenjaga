@@ -30,10 +30,11 @@ export default {
     cards: []
   }),
   created() {
-    axios.get('http://localhost:8000/kuis/cari_all').then((resp) => {
-      this.cards = resp.data
-      console.log(this.cards)
-    })
+    axios
+      .get('http://localhost:8000/kuis/cari_all?isPublished=true')
+      .then((resp) => {
+        this.cards = resp.data
+      })
   }
 }
 </script>

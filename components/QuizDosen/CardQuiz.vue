@@ -27,7 +27,7 @@
 
             <v-col class="text-center" cols="12" sm="4">
               <div v-if="card.isPublished === false" class="my-2">
-                <v-btn small color="warning" :to="link + '?kuis=' + card._id"
+                <v-btn small color="warning" @click="publish_kuis(card._id)"
                   >Publish</v-btn
                 >
               </div>
@@ -61,9 +61,7 @@ export default {
     axios
       .get('http://localhost:8000/kuis/cari_all?user=' + this.$auth.user.nomor)
       .then((resp) => {
-        console.log(resp.data)
         this.cards = resp.data
-        console.log(this.cards)
       })
 
     axios
@@ -84,10 +82,13 @@ export default {
             value
         )
         .then((resp) => {
-          console.log(resp.data)
           this.cards = resp.data
-          console.log(this.cards)
         })
+    },
+    publish_kuis(id) {
+      axios
+        .post('http://localhost:8000/kuis/publishKuis/' + id)
+        .then((resp) => {})
     }
   }
 }

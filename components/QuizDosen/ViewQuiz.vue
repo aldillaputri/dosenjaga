@@ -17,8 +17,7 @@
           <td>{{ item.nilai }}</td>
           <td>Tidak Lulus</td>
           <td>
-            <!-- <v-btn icon :to="link + '?hasil=' + item._id"> -->
-            <v-btn icon :to="link">
+            <v-btn icon :to="link + '?hasil=' + item._id">
               <v-icon color="info">mdi-eye</v-icon>
             </v-btn>
           </td>
@@ -43,15 +42,7 @@ export default {
     }
     axios.get('http://localhost:8000/hasil/cari_all' + params).then((resp) => {
       this.hasil = resp.data
-      console.log(this.hasil)
     })
-  },
-  methods: {
-    getColor(keterangan) {
-      if (keterangan === 'Lulus') return 'green'
-      else if (keterangan === 'Tidak Lulus') return 'red'
-      else return 'orange'
-    }
   }
 }
 </script>

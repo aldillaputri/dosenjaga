@@ -65,7 +65,6 @@ export default {
   data() {
     return {
       e1: 1,
-      // soals: 10,
       vertical: false,
       altLabels: false,
       editable: true,
