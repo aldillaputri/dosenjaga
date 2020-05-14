@@ -36,7 +36,7 @@ export default {
       .get(
         'http://localhost:8000/hasil/cari_all?user=' +
           this.$auth.user.nomor +
-          'isPublished=true'
+          '&isPublished=true'
       )
       .then((resp) => {
         this.cards = resp.data
