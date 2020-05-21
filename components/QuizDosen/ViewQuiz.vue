@@ -52,9 +52,9 @@ export default {
     }
   },
   mounted() {
-    let params = ''
+    let params = '?kuis=' + this.$route.query.kuis
     if (this.$auth.user.role === 1) {
-      params = '?user=' + this.$auth.user.nomor
+      params = '&user=' + this.$auth.user.nomor
     }
     axios.get('http://localhost:8000/hasil/cari_all' + params).then((resp) => {
       this.hasil = resp.data

@@ -19,22 +19,22 @@
           <v-row align="left">
             <v-col class="text-center" cols="12" sm="4">
               <div class="my-2">
-                <v-btn small color="primary" :to="link + '?kuis=' + card._id"
-                  >Test</v-btn
-                >
+                <v-btn small color="primary" :to="link + '?kuis=' + card._id">
+                  Test
+                </v-btn>
               </div>
             </v-col>
 
             <v-col class="text-center" cols="12" sm="4">
               <div v-if="card.isPublished === false" class="my-2">
-                <v-btn small color="warning" @click="publish_kuis(card._id)"
-                  >Publish</v-btn
-                >
+                <v-btn small color="warning" @click="publish_kuis(card._id)">
+                  Publish
+                </v-btn>
               </div>
             </v-col>
           </v-row>
           <v-spacer></v-spacer>
-          <v-btn icon :to="link2">
+          <v-btn icon :to="link2 + '?kuis=' + card._id">
             <v-icon color="info">mdi-eye</v-icon>
           </v-btn>
           <v-btn icon color="secondary" :to="link3">
@@ -59,9 +59,10 @@ export default {
   }),
   mounted() {
     axios
-      .get('http://localhost:8000/kuis/cari_all?user=' + this.$auth.user.nomor)
+      .get('http://localhost:8000/hasil/cari_all?user=' + this.$auth.user.nomor)
       .then((resp) => {
         this.cards = resp.data
+        console.log(this.cards)
       })
 
     axios

@@ -6,7 +6,7 @@
         <v-select
           v-model="form.kuliah"
           :items="kuliah"
-          item-text="matkul"
+          item-text="matakuliah.matkul"
           item-value="nomor"
           label="Kuliah"
         />
@@ -241,7 +241,9 @@ export default {
     // this.addLine()
     this.form.creator = this.$auth.user.nomor
     axios
-      .get('http://localhost:8000/matakuliah/cari_all?user=' + this.$auth.nomor)
+      .get(
+        'http://localhost:8000/kuliah/cari_all?user=' + this.$auth.user.nomor
+      )
       .then((resp) => {
         this.kuliah = resp.data
       })

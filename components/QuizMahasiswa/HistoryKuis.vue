@@ -7,7 +7,7 @@
           class="subtitle-1"
           v-text="card.kuis.judul"
         ></v-card-title>
-        <v-card-text v-text="card.date_created"></v-card-text>
+        <v-card-text v-text="card.kuis.date_created"></v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
