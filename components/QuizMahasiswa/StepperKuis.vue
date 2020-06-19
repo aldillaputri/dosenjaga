@@ -100,7 +100,8 @@ export default {
         // this.$auth.user.nomor
       )
       .then((resp) => {
-        console.log(resp.data)
+        console.log('=========================', resp.data[0])
+        setTimeout(this.submit, resp.data[0].durasi * 60 * 1000)
         this.soal = resp.data[0].id_pertanyaan
         this.soal.forEach((element, idx) => {
           this.jawaban[idx] = []
