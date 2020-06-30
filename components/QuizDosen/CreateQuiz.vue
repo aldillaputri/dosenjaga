@@ -39,7 +39,10 @@
         </v-row>
         <v-row>
           <v-col cols="12" sm="6" md="4">
-            <v-text-field v-model="form.durasi" label="Durasi"></v-text-field>
+            <v-text-field
+              v-model="form.durasi"
+              label="Durasi(menit)"
+            ></v-text-field>
           </v-col>
         </v-row>
         <!-- expansion panel -->

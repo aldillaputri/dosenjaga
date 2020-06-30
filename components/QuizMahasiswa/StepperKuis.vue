@@ -123,7 +123,6 @@ export default {
     submit() {
       this.soal.forEach((element, idx) => {
         this.soal[idx].jawabanPilganUser = this.jawaban[idx]
-        window.location = '/quiz-mahasiswa/history'
       })
       axios
         .post('http://localhost:8000/hasil/hitung', {
@@ -132,7 +131,7 @@ export default {
           kuis: this.$route.query.kuis
         })
         .then((resp) => {
-          console.log(resp)
+          window.location = '/quiz-mahasiswa/history'
         })
     }
   }
