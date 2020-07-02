@@ -93,6 +93,12 @@ export default {
     }
   },
   mounted() {
+    window.addEventListener('beforeunload', (event) => {
+      this.submit()
+      alert('jawaban telah di submit')
+      console.log('ignited')
+      return null
+    })
     axios
       .get(
         'http://localhost:8000/kuis/cari_all?_id=' + this.$route.query.kuis

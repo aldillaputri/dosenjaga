@@ -279,6 +279,7 @@ export default {
         if (data.pertanyaans[idx].creator === undefined) {
           data.pertanyaans[idx].creator = this.$auth.user.nomor
         }
+        console.log(element)
       })
       axios.post('http://localhost:8000/kuis', data).then((resp) => {})(
         (window.location = 'daftar')

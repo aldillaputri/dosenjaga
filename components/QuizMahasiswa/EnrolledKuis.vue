@@ -1,5 +1,16 @@
 <template>
   <v-row>
+    <v-col :cols="12">
+      <v-overflow-btn
+        class="my-2"
+        :items="schema_filter"
+        label="Filter Berdasarkan Skema"
+        editable
+        item-value="value"
+        item-text="label"
+        @change="filter_result"
+      ></v-overflow-btn>
+    </v-col>
     <!-- Mata Kuliah -->
     <v-col v-for="card in cards" :key="card.judul" :cols="3">
       <v-card>
@@ -27,14 +38,31 @@ import axios from 'axios'
 export default {
   data: () => ({
     link: '/quiz-mahasiswa/join',
-    cards: []
+    cards: [],
+    schema_filter: [
+      { value: '1', label: 'Reguler' },
+      { value: '2', label: 'Lanjut Jenjang' },
+      { value: '3', label: 'Pendidikan Jarak Jauh' }
+    ]
   }),
   created() {
     axios
-      .get('http://localhost:8000/kuis/cari_all?isPublished=true')
+      .get('http://localhost:8000/kuis/cari_all?isPublished=true&jenis_schema=')
       .then((resp) => {
         this.cards = resp.data
       })
+  },
+  methods: {
+    filter_result(value) {
+      axios
+        .get(
+          'http://localhost:8000/kuis/cari_all?isPublished=true&jenis_schema=' +
+            value
+        )
+        .then((resp) => {
+          this.cards = resp.data
+        })
+    }
   }
 }
 </script>
