@@ -16,7 +16,6 @@
               </v-col>
             </v-row>
             <div class="ml-3">
-              <!-- <p>{{ jawaban[n] }}</p> -->
               <v-checkbox
                 v-if="s.tipe === 'Pilihan Ganda'"
                 v-model="jawaban[n]"
@@ -62,7 +61,6 @@
         <v-card-title class="headline">Berhasil!</v-card-title>
 
         <v-card-text>
-          <p>Skor 100!</p>
           <p>Kuis sudah siap dipublish.</p>
         </v-card-text>
 
@@ -81,7 +79,6 @@ export default {
     return {
       dialog: false,
       e1: 1,
-      // soals: 10,
       vertical: false,
       altLabels: false,
       editable: true,
@@ -118,7 +115,6 @@ export default {
           this.$auth.user.nomor
       )
       .then((resp) => {
-        console.log(resp.data)
         this.soal = resp.data[0].id_pertanyaan
         this.soal.forEach((element, idx) => {
           this.jawaban[idx] = []
@@ -147,9 +143,7 @@ export default {
           user: this.$auth.user.nomor,
           kuis: this.$route.query.kuis
         })
-        .then((resp) => {
-          console.log(resp)
-        })
+        .then((resp) => {})
     }
   }
 }

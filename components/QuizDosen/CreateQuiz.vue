@@ -241,7 +241,6 @@ export default {
     }
   },
   mounted() {
-    // this.addLine()
     this.form.creator = this.$auth.user.nomor
     axios
       .get(
@@ -271,7 +270,6 @@ export default {
       if (this.form.soal.length > 1) this.lines.splice(lineId, 1)
     },
     save() {
-      // this.soal.push(this.form)
       const data = { ...this.form }
       data.pertanyaans = this.lines
       data.pertanyaans.forEach((element, idx) => {
@@ -279,7 +277,6 @@ export default {
         if (data.pertanyaans[idx].creator === undefined) {
           data.pertanyaans[idx].creator = this.$auth.user.nomor
         }
-        console.log(element)
       })
       axios.post('http://localhost:8000/kuis', data).then((resp) => {})(
         (window.location = 'daftar')

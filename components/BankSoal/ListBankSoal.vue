@@ -32,19 +32,11 @@ export default {
     }
   }),
   mounted() {
-    // this.addLine()
     this.editedItem.creator = this.$auth.user.nomor
     axios.get('http://localhost:8000/matakuliah/cari_all').then((resp) => {
       this.daftarMatakuliah = resp.data
       this.cards = resp.data
-      console.log(this.matakuliah)
     })
   }
-  // created() {
-  //   axios.get('http://localhost:8000/matakuliah/cari_all').then((resp) => {
-  //     this.cards = resp.data
-  //     // console.log(this.cards)
-  //   })
-  // }
 }
 </script>

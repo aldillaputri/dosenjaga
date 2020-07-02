@@ -62,7 +62,6 @@ export default {
       .get('http://localhost:8000/hasil/cari_all?user=' + this.$auth.user.nomor)
       .then((resp) => {
         this.cards = resp.data
-        console.log(this.cards)
       })
 
     axios

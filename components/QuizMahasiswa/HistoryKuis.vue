@@ -40,7 +40,6 @@ export default {
       )
       .then((resp) => {
         this.cards = resp.data
-        console.log(this.cards)
       })
   }
 }

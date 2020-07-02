@@ -89,24 +89,18 @@ export default {
     },
     vertical() {
       this.e1 = 2
-      requestAnimationFrame(() => (this.e1 = 1)) // Workarounds
+      requestAnimationFrame(() => (this.e1 = 1))
     }
   },
   mounted() {
     window.addEventListener('beforeunload', (event) => {
       this.submit()
       alert('jawaban telah di submit')
-      console.log('ignited')
       return null
     })
     axios
-      .get(
-        'http://localhost:8000/kuis/cari_all?_id=' + this.$route.query.kuis
-        // '&user=' +
-        // this.$auth.user.nomor
-      )
+      .get('http://localhost:8000/kuis/cari_all?_id=' + this.$route.query.kuis)
       .then((resp) => {
-        console.log('=========================', resp.data[0])
         setTimeout(this.submit, resp.data[0].durasi * 60 * 1000)
         this.soal = resp.data[0].id_pertanyaan
         this.soal.forEach((element, idx) => {
