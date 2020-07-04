@@ -157,8 +157,8 @@
     </template>
     <template v-slot:item.action="{ item }">
       <v-icon small @click="editItem(item)">mdi-lead-pencil edit</v-icon>
-      <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
-    </template>
+      <v-icon small @click="deleteItem(item)">mdi-delete</v-icon> </template
+    >entasi pythonnya aja
     <template v-slot:no-data>
       <v-btn color="primary" @click="initialize">Reset</v-btn>
     </template>
@@ -276,6 +276,7 @@ export default {
     },
 
     editItem(item) {
+      // console.log('test---------------------------')
       this.editedIndex = this.soal.indexOf(item)
       this.editedItemPilgan = Object.assign({}, item)
       this.editedItemEssay = Object.assign({}, item)
