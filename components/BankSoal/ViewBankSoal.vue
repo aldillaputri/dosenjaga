@@ -26,6 +26,16 @@
             <v-card-text>
               <v-container>
                 <v-row>
+                  <v-col>
+                    <v-file-input
+                      v-model="editedItemEssay.image"
+                      show-size
+                      counter
+                      label="Tambahkan Gambar"
+                    ></v-file-input>
+                  </v-col>
+                </v-row>
+                <v-row>
                   <v-col cols="12">
                     <v-textarea
                       v-model="editedItemEssay.pertanyaan"
@@ -80,6 +90,16 @@
 
             <v-card-text>
               <v-container>
+                <v-row>
+                  <v-col>
+                    <v-file-input
+                      v-model="editedItemPilgan.image"
+                      show-size
+                      counter
+                      label="Tambahkan Gambar"
+                    ></v-file-input>
+                  </v-col>
+                </v-row>
                 <v-row>
                   <v-col cols="12">
                     <v-textarea
@@ -169,6 +189,7 @@
 import axios from 'axios'
 export default {
   data: () => ({
+    file: null,
     items: ['A', 'B', 'C', 'D'],
     dialogPilgan: false,
     dialogEssay: false,
@@ -312,8 +333,30 @@ export default {
         this.soal.push(this.editedItemPilgan)
       }
       this.dialogPilgan = false
+
+      const fd = new FormData()
+
+      fd.append('pertanyaan', this.editedItemPilgan.pertanyaan)
+      fd.append('matakuliah', this.editedItemPilgan.matakuliah)
+      fd.append('tipe', this.editedItemPilgan.tipe)
+      fd.append('kunci', JSON.stringify(this.editedItemPilgan.kunci))
+      fd.append('jawaban1', this.editedItemPilgan.jawaban1)
+      fd.append('jawaban2', this.editedItemPilgan.jawaban2)
+      fd.append('jawaban3', this.editedItemPilgan.jawaban3)
+      fd.append('jawaban4', this.editedItemPilgan.jawaban4)
+      fd.append('bobot', this.editedItemPilgan.bobot)
+      fd.append('creator', this.editedItemPilgan.creator)
+      fd.append(
+        'image',
+        this.editedItemEssay.image,
+        this.editedItemEssay.image.name
+      )
       axios
-        .post('http://localhost:8000/soal', this.editedItemPilgan)
+        .post('http://localhost:8000/soal', fd, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
         .then((resp) => {})
     },
     saveEssay() {
@@ -323,8 +366,26 @@ export default {
         this.soal.push(this.editedItemEssay)
       }
       this.dialogEssay = false
+
+      const fd = new FormData()
+
+      fd.append('pertanyaan', this.editedItemEssay.pertanyaan)
+      fd.append('matakuliah', this.editedItemEssay.matakuliah)
+      fd.append('tipe', this.editedItemEssay.tipe)
+      fd.append('jawaban1', this.editedItemEssay.jawaban1)
+      fd.append('bobot', this.editedItemEssay.bobot)
+      fd.append('creator', this.editedItemEssay.creator)
+      fd.append(
+        'image',
+        this.editedItemEssay.image,
+        this.editedItemEssay.image.name
+      )
       axios
-        .post('http://localhost:8000/soal', this.editedItemEssay)
+        .post('http://localhost:8000/soal', fd, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
         .then((resp) => {})
     }
   }
