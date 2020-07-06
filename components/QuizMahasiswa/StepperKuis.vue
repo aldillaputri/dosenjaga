@@ -69,6 +69,7 @@ import axios from 'axios'
 export default {
   data() {
     return {
+      isSubmitted: false,
       e1: 1,
       vertical: false,
       altLabels: false,
@@ -127,6 +128,10 @@ export default {
       }
     },
     submit() {
+      if (this.isSubmitted) {
+        window.location = '/quiz-mahasiswa/history'
+        return
+      }
       this.soal.forEach((element, idx) => {
         this.soal[idx].jawabanPilganUser = this.jawaban[idx]
       })
@@ -137,6 +142,7 @@ export default {
           kuis: this.$route.query.kuis
         })
         .then((resp) => {
+          this.isSubmitted = true
           window.location = '/quiz-mahasiswa/history'
         })
     }

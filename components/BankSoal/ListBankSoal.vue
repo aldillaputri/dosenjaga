@@ -2,11 +2,14 @@
   <v-row>
     <v-col v-for="card in cards" :key="card.matkul" :cols="3">
       <v-card outlined>
-        <v-card-title class="subtitle-1" v-text="card.matkul"></v-card-title>
+        <v-card-title
+          class="subtitle-1"
+          v-text="card.matakuliah.name"
+        ></v-card-title>
         <v-card-text v-text="card.tipe"></v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn icon :to="link + '?matakuliah=' + card.nomor">
+          <v-btn icon :to="link + '?matakuliah=' + card.matakuliah.nomor">
             <v-icon color="info">mdi-eye</v-icon>
           </v-btn>
           <v-btn icon color="error">
@@ -33,7 +36,7 @@ export default {
   }),
   mounted() {
     this.editedItem.creator = this.$auth.user.nomor
-    axios.get('http://localhost:8000/matakuliah/cari_all').then((resp) => {
+    axios.get('http://localhost:8000/kuliah/cari_all').then((resp) => {
       this.daftarMatakuliah = resp.data
       this.cards = resp.data
     })

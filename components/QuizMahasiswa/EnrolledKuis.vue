@@ -47,7 +47,7 @@ export default {
   }),
   created() {
     axios
-      .get('http://localhost:8000/kuis/cari_all?isPublished=true&jenis_schema=')
+      .get('http://localhost:8000/kuis/cari_all?isPublished=true&jenisSchema=')
       .then((resp) => {
         this.cards = resp.data
       })
@@ -56,7 +56,7 @@ export default {
     filter_result(value) {
       axios
         .get(
-          'http://localhost:8000/kuis/cari_all?isPublished=true&jenis_schema=' +
+          'http://localhost:8000/kuis/cari_all?isPublished=true&jenisSchema=' +
             value
         )
         .then((resp) => {

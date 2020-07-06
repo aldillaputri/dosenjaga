@@ -7,8 +7,8 @@
         :items="dropdown_edit"
         label="Filter Berdasarkan Kuliah"
         editable
-        item-value="nomor"
-        item-text="matakuliah.matkul"
+        item-value="matakuliah.nomor"
+        item-text="matakuliah.name"
         @change="filter_result"
       ></v-overflow-btn>
     </v-col>

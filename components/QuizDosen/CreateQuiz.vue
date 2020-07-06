@@ -6,10 +6,17 @@
         <v-select
           v-model="form.kuliah"
           :items="kuliah"
-          item-text="matakuliah.matkul"
-          item-value="nomor"
+          item-text="matakuliah.name"
+          item-value="matakuliah.nomor"
           label="Kuliah"
         />
+        <v-select
+          v-model="form.jenisSchema"
+          :items="schema_filter"
+          label="Filter Berdasarkan Skema"
+          item-value="value"
+          item-text="label"
+        ></v-select>
         <v-text-field v-model="form.judul" label="Judul Kuis" />
         <!--datepicker-->
         <v-row>
@@ -215,6 +222,11 @@
 import axios from 'axios'
 export default {
   data: () => ({
+    schema_filter: [
+      { value: '1', label: 'Reguler' },
+      { value: '2', label: 'Lanjut Jenjang' },
+      { value: '3', label: 'Pendidikan Jarak Jauh' }
+    ],
     kuliah: [],
     menuDatePicker: false,
     kuncis: ['A', 'B', 'C', 'D'],
@@ -223,6 +235,7 @@ export default {
     form: {
       soal: [],
       kuliah: null,
+      jenisSchema: null,
       judul: '',
       date_created: '',
       durasi: '',

@@ -8,9 +8,6 @@
     <template v-slot:item.image="{ item }">
       <v-btn
         v-if="item.image"
-        text
-        small
-        color="primary"
         :href="'http://localhost:8000' + item.image"
         target="_blank"
         >Lihat Gambar</v-btn
@@ -23,7 +20,7 @@
         </v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
-        <!-- <v-dialog v-model="dialogEssay" max-width="500px">
+        <v-dialog v-model="dialogEssay" max-width="500px">
           <template v-slot:activator="{ on }">
             <v-btn color="primary" dark class="mb-2" v-on="on">
               <v-icon>mdi-plus</v-icon>&nbsp;Essay
@@ -183,7 +180,7 @@
               >
             </v-card-actions>
           </v-card>
-        </v-dialog>-->
+        </v-dialog>
       </v-toolbar>
     </template>
     <template v-slot:item.action="{ item }">
@@ -360,8 +357,8 @@ export default {
       fd.append('creator', this.editedItemPilgan.creator)
       fd.append(
         'image',
-        this.editedItemEssay.image,
-        this.editedItemEssay.image.name
+        this.editedItemPilgan.image,
+        this.editedItemPilgan.image.name
       )
       axios
         .post('http://localhost:8000/soal', fd, {
