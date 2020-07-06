@@ -5,6 +5,17 @@
     sort-by="calories"
     class="elevation-1"
   >
+    <template v-slot:item.image="{ item }">
+      <v-btn
+        v-if="item.image"
+        text
+        small
+        color="primary"
+        :href="'http://localhost:8000' + item.image"
+        target="_blank"
+        >Lihat Gambar</v-btn
+      >
+    </template>
     <template v-slot:top>
       <v-toolbar flat color="white">
         <v-toolbar-title>
@@ -12,7 +23,7 @@
         </v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
-        <v-dialog v-model="dialogEssay" max-width="500px">
+        <!-- <v-dialog v-model="dialogEssay" max-width="500px">
           <template v-slot:activator="{ on }">
             <v-btn color="primary" dark class="mb-2" v-on="on">
               <v-icon>mdi-plus</v-icon>&nbsp;Essay
@@ -172,13 +183,13 @@
               >
             </v-card-actions>
           </v-card>
-        </v-dialog>
+        </v-dialog>-->
       </v-toolbar>
     </template>
     <template v-slot:item.action="{ item }">
       <v-icon small @click="editItem(item)">mdi-lead-pencil edit</v-icon>
-      <v-icon small @click="deleteItem(item)">mdi-delete</v-icon> </template
-    >entasi pythonnya aja
+      <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+    </template>
     <template v-slot:no-data>
       <v-btn color="primary" @click="initialize">Reset</v-btn>
     </template>
@@ -194,6 +205,7 @@ export default {
     dialogPilgan: false,
     dialogEssay: false,
     headers: [
+      { text: 'Gambar', value: 'image' },
       {
         text: 'Pertanyaan',
         align: 'left',

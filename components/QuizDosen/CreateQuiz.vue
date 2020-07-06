@@ -183,6 +183,15 @@
           <v-card outlined>
             <div class="d-flex flex-no-wrap justify-space-between">
               <div>
+                <v-btn
+                  v-if="soal.image"
+                  text
+                  small
+                  color="primary"
+                  :href="'http://localhost:8000' + soal.image"
+                  target="_blank"
+                  >Lihat Gambar</v-btn
+                >
                 <v-card-title
                   class="subtitle-2"
                   v-text="soal.pertanyaan"

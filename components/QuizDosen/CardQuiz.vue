@@ -2,6 +2,7 @@
   <v-row>
     <v-col :cols="12">
       <v-overflow-btn
+        v-model="dropdown_kuliah"
         class="my-2"
         :items="dropdown_edit"
         label="Filter Berdasarkan Kuliah"
@@ -19,17 +20,17 @@
           <v-row align="left">
             <v-col class="text-center" cols="12" sm="4">
               <div class="my-2">
-                <v-btn small color="primary" :to="link + '?kuis=' + card._id">
-                  Test
-                </v-btn>
+                <v-btn small color="primary" :to="link + '?kuis=' + card._id"
+                  >Test</v-btn
+                >
               </div>
             </v-col>
 
             <v-col class="text-center" cols="12" sm="4">
               <div v-if="card.isPublished === false" class="my-2">
-                <v-btn small color="warning" @click="publish_kuis(card._id)">
-                  Publish
-                </v-btn>
+                <v-btn small color="warning" @click="publish_kuis(card._id)"
+                  >Publish</v-btn
+                >
               </div>
             </v-col>
           </v-row>
@@ -37,9 +38,9 @@
           <v-btn icon :to="link2 + '?kuis=' + card._id">
             <v-icon color="info">mdi-eye</v-icon>
           </v-btn>
-          <v-btn icon color="secondary" :to="link3">
+          <!-- <v-btn icon color="secondary" :to="link3">
             <v-icon>mdi-pencil</v-icon>
-          </v-btn>
+          </v-btn>-->
         </v-card-actions>
       </v-card>
     </v-col>
@@ -49,6 +50,7 @@
 import axios from 'axios'
 export default {
   data: () => ({
+    dropdown_kuliah: '',
     link: '/quiz/test',
     link2: '/quiz/view',
     link3: '/quiz/edit',
@@ -88,7 +90,10 @@ export default {
     publish_kuis(id) {
       axios
         .post('http://localhost:8000/kuis/publishKuis/' + id)
-        .then((resp) => {})
+        .then((resp) => {
+          window.alert('Kuis Berhasil di Publish')
+          this.filter_result(this.dropdown_kuliah)
+        })
     }
   }
 }

@@ -6,7 +6,7 @@
         &nbsp; Detail Jawaban {{ detail.user.nama }}
       </v-col>
       <v-col right cols="3">
-        <v-btn color="primary" class="white--text" to="/quiz/view">
+        <v-btn color="primary" class="white--text" to="/quiz/daftar">
           <v-icon left dark>mdi-backup-restore</v-icon>Kembali
         </v-btn>
       </v-col>

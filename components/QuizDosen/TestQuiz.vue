@@ -59,13 +59,15 @@
     <v-dialog v-model="dialog" max-width="290">
       <v-card>
         <v-card-title class="headline">Berhasil!</v-card-title>
-
         <v-card-text>
+          <p />
+          <p />
           <p>Kuis sudah siap dipublish.</p>
         </v-card-text>
-
         <v-card-actions>
-          <v-btn color="green darken-1" text @click="dialog = false">OK</v-btn>
+          <v-btn color="green darken-1" text @click="gotosite()"
+            >&nbsp; Kembali ke Daftar Kuis</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -123,6 +125,9 @@ export default {
   },
 
   methods: {
+    gotosite() {
+      window.location = '/quiz/daftar'
+    },
     onInput(val) {
       this.steps = parseInt(val)
     },
