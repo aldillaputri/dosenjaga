@@ -6,10 +6,17 @@
         <v-select
           v-model="form.kuliah"
           :items="kuliah"
-          item-text="matkul"
-          item-value="nomor"
+          item-text="matakuliah.name"
+          item-value="matakuliah.nomor"
           label="Kuliah"
         />
+        <v-select
+          v-model="form.jenisSchema"
+          :items="schema_filter"
+          label="Filter Berdasarkan Skema"
+          item-value="value"
+          item-text="label"
+        ></v-select>
         <v-text-field v-model="form.judul" label="Judul Kuis" />
         <!--datepicker-->
         <v-row>
@@ -39,7 +46,10 @@
         </v-row>
         <v-row>
           <v-col cols="12" sm="6" md="4">
-            <v-text-field v-model="form.durasi" label="Durasi"></v-text-field>
+            <v-text-field
+              v-model="form.durasi"
+              label="Durasi(menit)"
+            ></v-text-field>
           </v-col>
         </v-row>
         <!-- expansion panel -->
@@ -64,11 +74,11 @@
                   <v-row id="row-">
                     <v-col>
                       <v-file-input
-                        v-model="line.gambar"
+                        v-model="line.image"
                         show-size
                         counter
-                        multiple
                         label="Tambahkan Gambar"
+                        @change="line.isImageEdited = true"
                       ></v-file-input>
                     </v-col>
                   </v-row>
@@ -180,6 +190,15 @@
           <v-card outlined>
             <div class="d-flex flex-no-wrap justify-space-between">
               <div>
+                <v-btn
+                  v-if="soal.image"
+                  text
+                  small
+                  color="primary"
+                  :href="'http://localhost:8000' + soal.image"
+                  target="_blank"
+                  >Lihat Gambar</v-btn
+                >
                 <v-card-title
                   class="subtitle-2"
                   v-text="soal.pertanyaan"
@@ -203,6 +222,11 @@
 import axios from 'axios'
 export default {
   data: () => ({
+    schema_filter: [
+      { value: '1', label: 'Reguler' },
+      { value: '2', label: 'Lanjut Jenjang' },
+      { value: '3', label: 'Pendidikan Jarak Jauh' }
+    ],
     kuliah: [],
     menuDatePicker: false,
     kuncis: ['A', 'B', 'C', 'D'],
@@ -211,6 +235,7 @@ export default {
     form: {
       soal: [],
       kuliah: null,
+      jenisSchema: null,
       judul: '',
       date_created: '',
       durasi: '',
@@ -240,9 +265,23 @@ export default {
   mounted() {
     this.form.creator = this.$auth.user.nomor
     axios
-      .get('http://localhost:8000/matakuliah/cari_all?user=' + this.$auth.nomor)
+      .get(
+        'http://localhost:8000/kuliah/cari_all?user=' + this.$auth.user.nomor
+      )
       .then((resp) => {
         this.kuliah = resp.data
+      })
+
+    axios
+      .get('http://localhost:8000/kuis/cari_all?_id=' + this.$route.query.kuis)
+      .then((resp) => {
+        this.form = resp.data[0]
+        const lines = resp.data[0].id_pertanyaan
+        lines.forEach((elem, idx) => {
+          elem.image = null
+          elem.isImageEdited = false
+        })
+        this.lines = lines
       })
   },
 
@@ -264,18 +303,87 @@ export default {
     removeQuestion(lineId) {
       if (this.form.soal.length > 1) this.lines.splice(lineId, 1)
     },
-    save() {
+    async save() {
       const data = { ...this.form }
       data.pertanyaans = this.lines
-      data.pertanyaans.forEach((element, idx) => {
-        data.pertanyaans[idx].matakuliah = data.kuliah
-        if (data.pertanyaans[idx].creator === undefined) {
-          data.pertanyaans[idx].creator = this.$auth.user.nomor
-        }
-      })
-      axios.post('http://localhost:8000/kuis', data).then((resp) => {})(
-        (window.location = 'daftar')
+      await Promise.all(
+        data.pertanyaans.map(async (element, idx) => {
+          console.log('#######', data.pertanyaans[idx])
+          if (data.pertanyaans[idx]._id) {
+            data.pertanyaans[idx].creator = this.$auth.user.nomor
+            const pertanyaan = data.pertanyaans[idx]
+            const fd = new FormData()
+            fd.append('pertanyaan', pertanyaan.pertanyaan)
+            fd.append('matakuliah', pertanyaan.matakuliah)
+            fd.append('tipe', pertanyaan.tipe)
+            fd.append('jawaban1', pertanyaan.jawaban1)
+            fd.append('bobot', pertanyaan.bobot)
+            fd.append('creator', pertanyaan.creator)
+            console.log(pertanyaan.tipe)
+            if (pertanyaan.tipe === 'Pilihan Ganda') {
+              fd.append('kunci', JSON.stringify(pertanyaan.kunci))
+              fd.append('jawaban2', pertanyaan.jawaban2)
+              fd.append('jawaban3', pertanyaan.jawaban3)
+              fd.append('jawaban4', pertanyaan.jawaban4)
+            }
+            if (pertanyaan.image && pertanyaan.isImageEdited) {
+              console.log(pertanyaan.image)
+              console.log(pertanyaan.image instanceof Blob)
+              fd.append('image', pertanyaan.image, pertanyaan.image.name)
+            }
+
+            await axios.post(
+              'http://localhost:8000/soal/' + pertanyaan._id,
+              fd,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+              }
+            )
+            data.pertanyaans[idx] = data.pertanyaans[idx]._id
+          } else {
+            data.pertanyaans[idx].matakuliah = data.kuliah
+            data.pertanyaans[idx].creator = this.$auth.user.nomor
+            const pertanyaan = data.pertanyaans[idx]
+            const fd = new FormData()
+            fd.append('pertanyaan', pertanyaan.pertanyaan)
+            fd.append('matakuliah', pertanyaan.matakuliah)
+            fd.append('tipe', pertanyaan.tipe)
+            fd.append('jawaban1', pertanyaan.jawaban1)
+            fd.append('bobot', pertanyaan.bobot)
+            fd.append('creator', pertanyaan.creator)
+            console.log(pertanyaan.tipe)
+            if (pertanyaan.tipe === 'Pilihan Ganda') {
+              fd.append('kunci', JSON.stringify(pertanyaan.kunci))
+              fd.append('jawaban2', pertanyaan.jawaban2)
+              fd.append('jawaban3', pertanyaan.jawaban3)
+              fd.append('jawaban4', pertanyaan.jawaban4)
+            }
+            if (pertanyaan.image) {
+              console.log(pertanyaan.image)
+              console.log(pertanyaan.image instanceof Blob)
+              fd.append('image', pertanyaan.image, pertanyaan.image.name)
+            }
+
+            const resp = await axios.post('http://localhost:8000/soal/', fd, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+            data.pertanyaans[idx] = resp.data._id
+          }
+        })
       )
+
+      console.log('@@@@@@@', data)
+      const resp = await axios.post(
+        'http://localhost:8000/kuis/' + data._id,
+        data
+      )
+      console.log(resp.data)
+
+      window.location = 'daftar'
     }
   }
 }

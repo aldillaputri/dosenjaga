@@ -198,6 +198,7 @@ import axios from 'axios'
 export default {
   data: () => ({
     file: null,
+    _id: null,
     items: ['A', 'B', 'C', 'D'],
     dialogPilgan: false,
     dialogEssay: false,
@@ -305,12 +306,31 @@ export default {
       this.soal = []
     },
 
+    refresh() {
+      axios
+        .get(
+          'http://localhost:8000/soal/cari_all?matakuliah=' +
+            this.$route.query.matakuliah +
+            '&user=' +
+            this.$auth.user.nomor
+        )
+        .then((resp) => {
+          this.soal = resp.data
+        })
+    },
+
     editItem(item) {
-      // console.log('test---------------------------')
+      item.image = null
       this.editedIndex = this.soal.indexOf(item)
       this.editedItemPilgan = Object.assign({}, item)
       this.editedItemEssay = Object.assign({}, item)
-      this.dialog = true
+      if (item.tipe === 'Essay') {
+        this.dialogEssay = true
+      } else {
+        this.dialogPilgan = true
+      }
+
+      this._id = item._id
     },
 
     deleteItem(item) {
@@ -355,18 +375,37 @@ export default {
       fd.append('jawaban4', this.editedItemPilgan.jawaban4)
       fd.append('bobot', this.editedItemPilgan.bobot)
       fd.append('creator', this.editedItemPilgan.creator)
-      fd.append(
-        'image',
-        this.editedItemPilgan.image,
-        this.editedItemPilgan.image.name
-      )
-      axios
-        .post('http://localhost:8000/soal', fd, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        .then((resp) => {})
+
+      if (this.editedItemPilgan.image) {
+        fd.append(
+          'image',
+          this.editedItemPilgan.image,
+          this.editedItemPilgan.image.name
+        )
+      }
+
+      if (this._id) {
+        axios
+          .post('http://localhost:8000/soal/' + this._id, fd, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          })
+          .then((resp) => {
+            this._id = null
+            this.refresh()
+          })
+      } else {
+        axios
+          .post('http://localhost:8000/soal', fd, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          })
+          .then((resp) => {
+            this.refresh()
+          })
+      }
     },
     saveEssay() {
       if (this.editedIndex > -1) {
@@ -384,18 +423,36 @@ export default {
       fd.append('jawaban1', this.editedItemEssay.jawaban1)
       fd.append('bobot', this.editedItemEssay.bobot)
       fd.append('creator', this.editedItemEssay.creator)
-      fd.append(
-        'image',
-        this.editedItemEssay.image,
-        this.editedItemEssay.image.name
-      )
-      axios
-        .post('http://localhost:8000/soal', fd, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        .then((resp) => {})
+      if (this.editedItemEssay.image) {
+        fd.append(
+          'image',
+          this.editedItemEssay.image,
+          this.editedItemEssay.image.name
+        )
+      }
+
+      if (this._id) {
+        axios
+          .post('http://localhost:8000/soal/' + this._id, fd, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          })
+          .then((resp) => {
+            this._id = null
+            this.refresh()
+          })
+      } else {
+        axios
+          .post('http://localhost:8000/soal', fd, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          })
+          .then((resp) => {
+            this.refresh()
+          })
+      }
     }
   }
 }

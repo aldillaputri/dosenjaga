@@ -38,9 +38,14 @@
           <v-btn icon :to="link2 + '?kuis=' + card._id">
             <v-icon color="info">mdi-eye</v-icon>
           </v-btn>
-          <!-- <v-btn icon color="secondary" :to="link3">
+          <v-btn
+            v-if="card.isPublished === false"
+            icon
+            color="secondary"
+            :to="link3 + '?kuis=' + card._id"
+          >
             <v-icon>mdi-pencil</v-icon>
-          </v-btn>-->
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-col>

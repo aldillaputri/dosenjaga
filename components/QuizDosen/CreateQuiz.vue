@@ -74,10 +74,9 @@
                   <v-row id="row-">
                     <v-col>
                       <v-file-input
-                        v-model="line.gambar"
+                        v-model="line.image"
                         show-size
                         counter
-                        multiple
                         label="Tambahkan Gambar"
                       ></v-file-input>
                     </v-col>
@@ -291,18 +290,53 @@ export default {
     removeQuestion(lineId) {
       if (this.form.soal.length > 1) this.lines.splice(lineId, 1)
     },
-    save() {
+    async save() {
       const data = { ...this.form }
       data.pertanyaans = this.lines
-      data.pertanyaans.forEach((element, idx) => {
-        data.pertanyaans[idx].matakuliah = data.kuliah
-        if (data.pertanyaans[idx].creator === undefined) {
-          data.pertanyaans[idx].creator = this.$auth.user.nomor
-        }
-      })
-      axios.post('http://localhost:8000/kuis', data).then((resp) => {})(
-        (window.location = 'daftar')
+      await Promise.all(
+        data.pertanyaans.map(async (element, idx) => {
+          console.log('#######', data.pertanyaans[idx])
+          if (data.pertanyaans[idx]._id) {
+            data.pertanyaans[idx] = data.pertanyaans[idx]._id
+          } else {
+            data.pertanyaans[idx].matakuliah = data.kuliah
+            data.pertanyaans[idx].creator = this.$auth.user.nomor
+            const pertanyaan = data.pertanyaans[idx]
+            const fd = new FormData()
+            fd.append('pertanyaan', pertanyaan.pertanyaan)
+            fd.append('matakuliah', pertanyaan.matakuliah)
+            fd.append('tipe', pertanyaan.tipe)
+            fd.append('jawaban1', pertanyaan.jawaban1)
+            fd.append('bobot', pertanyaan.bobot)
+            fd.append('creator', pertanyaan.creator)
+            console.log(pertanyaan.tipe)
+            if (pertanyaan.tipe === 'Pilihan Ganda') {
+              fd.append('kunci', JSON.stringify(pertanyaan.kunci))
+              fd.append('jawaban2', pertanyaan.jawaban2)
+              fd.append('jawaban3', pertanyaan.jawaban3)
+              fd.append('jawaban4', pertanyaan.jawaban4)
+            }
+            if (pertanyaan.image) {
+              console.log(pertanyaan.image)
+              console.log(pertanyaan.image instanceof Blob)
+              fd.append('image', pertanyaan.image, pertanyaan.image.name)
+            }
+
+            const resp = await axios.post('http://localhost:8000/soal', fd, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+            data.pertanyaans[idx] = resp.data._id
+          }
+        })
       )
+
+      console.log('@@@@@@@', data)
+      const resp = await axios.post('http://localhost:8000/kuis', data)
+      console.log(resp.data)
+
+      window.location = 'daftar'
     }
   }
 }
