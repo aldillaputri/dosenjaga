@@ -62,10 +62,12 @@ export default {
   },
   methods: {
     publish_hasil() {
-      this.hasil.forEach((item) =>
-        axios
-          .post('http://localhost:8000/hasil/publishHasil/' + item._id)
-          .then((resp) => {})
+      this.hasil.forEach(
+        (item) =>
+          axios
+            .post('http://localhost:8000/hasil/publishHasil/' + item._id)
+            .then((resp) => {}),
+        window.alert('Nilai Berhasil di Publish')
       )
     }
   }

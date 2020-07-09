@@ -8,6 +8,12 @@
 
         <v-stepper-content :key="`${n}-content`" :step="n">
           <v-card class="mb-12" outlined>
+            <v-img
+              v-if="s.image"
+              :src="'http://localhost:8000' + s.image"
+              aspect-ratio="4"
+              contain
+            />
             <v-row>
               <v-col class="ml-3 mr-3">
                 <v-text-field v-model="s.pertanyaan" readonly>

@@ -171,10 +171,7 @@
         <v-checkbox v-model="form.isPublished" label="Publish"></v-checkbox>
 
         <v-card-actions>
-          <b>Total Point:</b>
-          <v-spacer></v-spacer>
           <v-btn color="error" to="/">Batal</v-btn>
-          <v-btn color="normal">Reset</v-btn>
           <v-btn color="success" @click="save">Buat</v-btn>
         </v-card-actions>
       </v-form>
@@ -308,7 +305,6 @@ export default {
       data.pertanyaans = this.lines
       await Promise.all(
         data.pertanyaans.map(async (element, idx) => {
-          console.log('#######', data.pertanyaans[idx])
           if (data.pertanyaans[idx]._id) {
             data.pertanyaans[idx].creator = this.$auth.user.nomor
             const pertanyaan = data.pertanyaans[idx]
@@ -319,7 +315,6 @@ export default {
             fd.append('jawaban1', pertanyaan.jawaban1)
             fd.append('bobot', pertanyaan.bobot)
             fd.append('creator', pertanyaan.creator)
-            console.log(pertanyaan.tipe)
             if (pertanyaan.tipe === 'Pilihan Ganda') {
               fd.append('kunci', JSON.stringify(pertanyaan.kunci))
               fd.append('jawaban2', pertanyaan.jawaban2)
@@ -327,8 +322,6 @@ export default {
               fd.append('jawaban4', pertanyaan.jawaban4)
             }
             if (pertanyaan.image && pertanyaan.isImageEdited) {
-              console.log(pertanyaan.image)
-              console.log(pertanyaan.image instanceof Blob)
               fd.append('image', pertanyaan.image, pertanyaan.image.name)
             }
 
@@ -353,7 +346,6 @@ export default {
             fd.append('jawaban1', pertanyaan.jawaban1)
             fd.append('bobot', pertanyaan.bobot)
             fd.append('creator', pertanyaan.creator)
-            console.log(pertanyaan.tipe)
             if (pertanyaan.tipe === 'Pilihan Ganda') {
               fd.append('kunci', JSON.stringify(pertanyaan.kunci))
               fd.append('jawaban2', pertanyaan.jawaban2)
@@ -361,8 +353,6 @@ export default {
               fd.append('jawaban4', pertanyaan.jawaban4)
             }
             if (pertanyaan.image) {
-              console.log(pertanyaan.image)
-              console.log(pertanyaan.image instanceof Blob)
               fd.append('image', pertanyaan.image, pertanyaan.image.name)
             }
 
@@ -375,8 +365,6 @@ export default {
           }
         })
       )
-
-      console.log('@@@@@@@', data)
       const resp = await axios.post(
         'http://localhost:8000/kuis/' + data._id,
         data
