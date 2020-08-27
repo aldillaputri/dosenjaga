@@ -5,7 +5,7 @@
       v-model="editedItem.kuliah"
       :items="daftarMatakuliah"
       item-text="matkul"
-      item-value="_id"
+      item-value="nomor"
       label="Mata Kuliah"
     ></v-select>
 
