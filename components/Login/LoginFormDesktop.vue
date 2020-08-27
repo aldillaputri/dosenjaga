@@ -36,8 +36,6 @@
 </template>
 
 <script>
-// import axios from 'axios'
-// import router from '~/.nuxt/router'
 export default {
   name: 'Login',
   data() {
@@ -52,10 +50,8 @@ export default {
   methods: {
     loginn: (e) => {
       alert('abc')
-      console.log('abcd')
     },
     login(e) {
-      // console.log('abcd')
       e.preventDefault()
       this.$auth
         .loginWith('local', {
@@ -67,29 +63,6 @@ export default {
         .then((resp) => {
           window.location.href = '/'
         })
-
-      // window.location.href = '/'
-      // alert('aaaaaaaaaaaa')
-      // console.log(this)
-      // console.log(this.userData)
-      // const email = ''
-      // const password = 'password'
-      // const login = () => {
-      //   const data = {
-      //     email,
-      //     password
-      //   }
-      //   axios
-      //     .post('/api/login', data)
-      //     .then((response) => {
-      //       console.log('Logged in')
-      //       router.push('/dashboard')
-      //     })
-      //     .catch((errors) => {
-      //       console.log('Cannot log in')
-      //     })
-      // }
-      // login()
     }
   }
 }

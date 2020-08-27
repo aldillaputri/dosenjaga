@@ -5,10 +5,9 @@
         <v-img src="/user.png" />
       </v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-title class="subtitle-1 font-weight-bold">
-          {{ email }}
-        </v-list-item-title>
-        <!-- <v-list-item-subtitle>Dosen</v-list-item-subtitle> -->
+        <v-list-item-title class="subtitle-1 font-weight-bold">{{
+          email
+        }}</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
     <v-list-item>
@@ -20,7 +19,7 @@
     <v-list>
       <v-list-item>
         <v-list-item-icon>
-          <v-icon>mdi-home</v-icon>
+          <v-icon>mdi-home-outline</v-icon>
         </v-list-item-icon>
         <v-list-item-title>Beranda</v-list-item-title>
       </v-list-item>
@@ -59,12 +58,11 @@
   </v-navigation-drawer>
 </template>
 <script>
-// import axios from 'axios'
 export default {
   data() {
     const items = [
       {
-        action: 'mdi-forum',
+        action: 'mdi-forum-outline',
         title: 'Kuis Online',
         isShown: this.$auth.user.role === '1',
         items: [
@@ -73,7 +71,7 @@ export default {
         ]
       },
       {
-        action: 'mdi-forum',
+        action: 'mdi-forum-outline',
         title: 'Kuis Online',
         isShown: this.$auth.user.role === '2',
         items: [
@@ -82,7 +80,7 @@ export default {
         ]
       },
       {
-        action: 'mdi-comment-question-outline',
+        action: 'mdi-file-question-outline',
         title: 'Bank Soal',
         isShown: this.$auth.user.role === '1',
         items: [{ title: 'Daftar Bank Soal', link: '/banksoal/daftar' }]
@@ -90,16 +88,13 @@ export default {
     ]
     return {
       email: this.$auth.user.email,
-      // role: this.$auth.user.role,
       items: items.filter((element) => {
-        console.log(this.$auth.user)
         return element.isShown
       })
     }
   },
   methods: {
     logout() {
-      console.log(this.$auth.user)
       localStorage.clear()
       this.$auth.logout()
       window.location = 'http://localhost:3000/login'

@@ -2,17 +2,17 @@
   <v-card class="pa-5">
     <v-row>
       <v-col>
-        <create-quiz></create-quiz>
+        <edit-quiz></edit-quiz>
       </v-col>
     </v-row>
   </v-card>
 </template>
 
 <script>
-import CreateQuiz from '~/components/QuizDosen/CreateQuiz.vue'
+import EditQuiz from '~/components/QuizDosen/EditQuiz.vue'
 export default {
   components: {
-    CreateQuiz
+    EditQuiz
   }
 }
 </script>

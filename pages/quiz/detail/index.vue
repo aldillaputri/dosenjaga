@@ -1,5 +1,11 @@
 <template>
-  <detail-hasil-quiz></detail-hasil-quiz>
+  <v-card class="pa-5">
+    <v-row>
+      <v-col class="pa-5">
+        <detail-hasil-quiz></detail-hasil-quiz>
+      </v-col>
+    </v-row>
+  </v-card>
 </template>
 
 <script>

@@ -1,15 +1,17 @@
 <template>
   <v-row>
-    <!-- Mata Kuliah -->
     <v-col :cols="12">
       <v-overflow-btn
         class="my-2"
-        :items="dropdown_edit"
-        label="Nama Kuis"
+        :items="schema_filter"
+        label="Filter Berdasarkan Skema"
         editable
-        item-value="text"
+        item-value="value"
+        item-text="label"
+        @change="filter_result"
       ></v-overflow-btn>
     </v-col>
+    <!-- Mata Kuliah -->
     <v-col v-for="card in cards" :key="card.judul" :cols="3">
       <v-card>
         <v-card-title class="subtitle-1" v-text="card.judul"></v-card-title>
@@ -36,22 +38,31 @@ import axios from 'axios'
 export default {
   data: () => ({
     link: '/quiz-mahasiswa/join',
-    dropdown_edit: [
-      { text: 'Keamanan Jaringan' },
-      { text: 'Basis Data' },
-      { text: 'Pemrograman Framework' },
-      { text: 'Agama' },
-      { text: 'Bahasa Inggris' },
-      { text: 'Pendidikan Kewarganegaraan' },
-      { text: 'Metodologi Riset' }
-    ],
-    cards: []
+    cards: [],
+    schema_filter: [
+      { value: '1', label: 'Reguler' },
+      { value: '2', label: 'Lanjut Jenjang' },
+      { value: '3', label: 'Pendidikan Jarak Jauh' }
+    ]
   }),
   created() {
-    axios.get('http://localhost:8000/kuis/cari_all').then((resp) => {
-      this.cards = resp.data
-      console.log(this.cards)
-    })
+    axios
+      .get('http://localhost:8000/kuis/cari_all?isPublished=true&jenis_schema=')
+      .then((resp) => {
+        this.cards = resp.data
+      })
+  },
+  methods: {
+    filter_result(value) {
+      axios
+        .get(
+          'http://localhost:8000/kuis/cari_all?isPublished=true&jenis_schema=' +
+            value
+        )
+        .then((resp) => {
+          this.cards = resp.data
+        })
+    }
   }
 }
 </script>

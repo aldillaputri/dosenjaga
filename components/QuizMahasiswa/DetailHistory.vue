@@ -2,11 +2,10 @@
   <div>
     <v-row>
       <v-col cols="9">
-        <v-icon>mdi-file-multiple</v-icon>
-        &nbsp; Detail Jawaban {{ detail.user.nama }}
+        <v-icon>mdi-file-multiple</v-icon>&nbsp; Detail Jawaban Anda
       </v-col>
       <v-col right cols="3">
-        <v-btn color="primary" class="white--text" to="/quiz/view">
+        <v-btn color="primary" class="white--text" to="/quiz-mahasiswa/history">
           <v-icon left dark>mdi-backup-restore</v-icon>Kembali
         </v-btn>
       </v-col>
@@ -21,9 +20,7 @@
         <thead>
           <tr>
             <th class="text-left">Soal</th>
-            <th class="text-left">Jawaban Mahasiswa</th>
-            <th class="text-left">Kunci Jawaban</th>
-            <th class="text-left">Skor</th>
+            <th class="text-left">Jawaban Anda</th>
           </tr>
         </thead>
         <tbody>
@@ -33,11 +30,6 @@
               {{ item.jawabanEssay }}
             </td>
             <td v-else>{{ item.jawabanPilgan }}</td>
-            <td v-if="item.pertanyaan.tipe === 'Essay'">
-              {{ item.pertanyaan.jawaban1 }}
-            </td>
-            <td v-else>{{ item.pertanyaan.kunci }}</td>
-            <td>{{ item.nilai }}</td>
           </tr>
         </tbody>
       </template>

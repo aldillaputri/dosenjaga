@@ -65,7 +65,6 @@ export default {
   data() {
     return {
       e1: 1,
-      // soals: 10,
       vertical: false,
       altLabels: false,
       editable: true,
@@ -90,19 +89,19 @@ export default {
     },
     vertical() {
       this.e1 = 2
-      requestAnimationFrame(() => (this.e1 = 1)) // Workarounds
+      requestAnimationFrame(() => (this.e1 = 1))
     }
   },
   mounted() {
+    window.addEventListener('beforeunload', (event) => {
+      this.submit()
+      alert('jawaban telah di submit')
+      return null
+    })
     axios
-      .get(
-        'http://localhost:8000/kuis/cari_all?_id=' +
-          this.$route.query.kuis +
-          '&user=' +
-          this.$auth.user._id
-      )
+      .get('http://localhost:8000/kuis/cari_all?_id=' + this.$route.query.kuis)
       .then((resp) => {
-        console.log(resp.data)
+        setTimeout(this.submit, resp.data[0].durasi * 60 * 1000)
         this.soal = resp.data[0].id_pertanyaan
         this.soal.forEach((element, idx) => {
           this.jawaban[idx] = []
@@ -124,16 +123,15 @@ export default {
     submit() {
       this.soal.forEach((element, idx) => {
         this.soal[idx].jawabanPilganUser = this.jawaban[idx]
-        window.location = '/quiz-mahasiswa/history'
       })
       axios
         .post('http://localhost:8000/hasil/hitung', {
           soal: this.soal,
-          user: this.$auth.user._id,
+          user: this.$auth.user.nomor,
           kuis: this.$route.query.kuis
         })
         .then((resp) => {
-          console.log(resp)
+          window.location = '/quiz-mahasiswa/history'
         })
     }
   }

@@ -65,10 +65,8 @@
                 >Simpan</v-btn
               >
             </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <!-- <v-spacer></v-spacer> -->
-        &nbsp; &nbsp;
+          </v-card> </v-dialog
+        >&nbsp; &nbsp;
         <v-dialog v-model="dialogPilgan" max-width="500px">
           <template v-slot:activator="{ on }">
             <v-btn color="primary" dark class="mb-2" v-on="on">
@@ -181,7 +179,6 @@ export default {
         sortable: false,
         value: 'pertanyaan'
       },
-      // { text: 'Matakuliah', value: 'matakuliah.matkul' },
       { text: 'Tipe', value: 'tipe' },
       { text: 'A', value: 'jawaban1' },
       { text: 'B', value: 'jawaban2' },
@@ -256,11 +253,10 @@ export default {
         'http://localhost:8000/soal/cari_all?matakuliah=' +
           this.$route.query.matakuliah +
           '&user=' +
-          this.$auth.user._id
+          this.$auth.user.nomor
       )
       .then((resp) => {
         this.soal = resp.data
-        console.log(this.soal)
       })
   },
 
@@ -268,13 +264,13 @@ export default {
     initialize() {
       this.editedItemPilgan.tipe = 'Pilihan Ganda'
       this.defaultItemPilgan.tipe = 'Pilihan Ganda'
-      this.editedItemPilgan.creator = this.$auth.user._id
-      this.defaultItemPilgan.creator = this.$auth.user._id
+      this.editedItemPilgan.creator = this.$auth.user.nomor
+      this.defaultItemPilgan.creator = this.$auth.user.nomor
 
       this.editedItemEssay.tipe = 'Essay'
       this.defaultItemEssay.tipe = 'Essay'
-      this.editedItemEssay.creator = this.$auth.user._id
-      this.defaultItemEssay.creator = this.$auth.user._id
+      this.editedItemEssay.creator = this.$auth.user.nomor
+      this.defaultItemEssay.creator = this.$auth.user.nomor
 
       this.soal = []
     },
@@ -325,13 +321,10 @@ export default {
       } else {
         this.soal.push(this.editedItemEssay)
       }
-      // this.close()
       this.dialogEssay = false
       axios
         .post('http://localhost:8000/soal', this.editedItemEssay)
-        .then((resp) => {
-          // console.log(resp)
-        })
+        .then((resp) => {})
     }
   }
 }

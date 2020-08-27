@@ -16,7 +16,6 @@
               </v-col>
             </v-row>
             <div class="ml-3">
-              <!-- <p>{{ jawaban[n] }}</p> -->
               <v-checkbox
                 v-if="s.tipe === 'Pilihan Ganda'"
                 v-model="jawaban[n]"
@@ -56,12 +55,14 @@
         </v-stepper-content>
       </template>
     </v-stepper>
-    <v-btn color="primary" @click="dialog = false">Submit</v-btn>
+    <v-btn color="primary" @click.stop="dialog = true">Submit</v-btn>
     <v-dialog v-model="dialog" max-width="290">
       <v-card>
         <v-card-title class="headline">Berhasil!</v-card-title>
 
-        <v-card-text>Kuis sudah siap dipublish.</v-card-text>
+        <v-card-text>
+          <p>Kuis sudah siap dipublish.</p>
+        </v-card-text>
 
         <v-card-actions>
           <v-btn color="green darken-1" text @click="dialog = false">OK</v-btn>
@@ -78,7 +79,6 @@ export default {
     return {
       dialog: false,
       e1: 1,
-      // soals: 10,
       vertical: false,
       altLabels: false,
       editable: true,
@@ -106,30 +106,15 @@ export default {
       requestAnimationFrame(() => (this.e1 = 1)) // Workarounds
     }
   },
-  // created() {
-  //   this.soal.kuis = this.$route.query.kuis
-  //   axios
-  //     .get(
-  //       'http://localhost:8000/kuis/cari_all?id=' +
-  //         this.$route.query.kuis +
-  //         '&user=' +
-  //         this.$auth.user._id
-  //     )
-  //     .then((resp) => {
-  //       this.kuis = resp.data
-  //       console.log(this.kuis)
-  //     })
-  // },
   mounted() {
     axios
       .get(
         'http://localhost:8000/kuis/cari_all?_id=' +
           this.$route.query.kuis +
           '&user=' +
-          this.$auth.user._id
+          this.$auth.user.nomor
       )
       .then((resp) => {
-        console.log(resp.data)
         this.soal = resp.data[0].id_pertanyaan
         this.soal.forEach((element, idx) => {
           this.jawaban[idx] = []
@@ -155,12 +140,10 @@ export default {
       axios
         .post('http://localhost:8000/hasil/hitung', {
           soal: this.soal,
-          user: this.$auth.user._id,
+          user: this.$auth.user.nomor,
           kuis: this.$route.query.kuis
         })
-        .then((resp) => {
-          console.log(resp)
-        })
+        .then((resp) => {})
     }
   }
 }

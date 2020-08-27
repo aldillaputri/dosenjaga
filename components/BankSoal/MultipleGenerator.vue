@@ -162,12 +162,9 @@ export default {
     blockRemoval: true
   }),
   mounted() {
-    // this.addLine()
-    this.editedItem.creator = this.$auth.user._id
+    this.editedItem.creator = this.$auth.user.nomor
     axios.get('http://localhost:8000/matakuliah/cari_all').then((resp) => {
       this.daftarMatakuliah = resp.data
-
-      console.log(this.matakuliah)
     })
   },
 
@@ -187,20 +184,11 @@ export default {
       this.$refs.form.resetValidation()
     },
     addQuestion() {
-      // const checkEmptyLines = this.lines.filter((line) => line.number === null)
-      if (
-        // checkEmptyLines.length >= 0 &&
-        // this.lines.length > 0 &&
-        this.radio1 === 'Pilihan Ganda'
-      ) {
+      if (this.radio1 === 'Pilihan Ganda') {
         this.lines.push({
           tipe: 'Pilihan Ganda'
         })
-      } else if (
-        // checkEmptyLines.length >= 0 &&
-        // this.lines.length > 0 &&
-        this.radio1 === 'Essay'
-      ) {
+      } else if (this.radio1 === 'Essay') {
         this.lines.push({
           tipe: 'Essay'
         })
@@ -212,18 +200,15 @@ export default {
 
     save() {
       this.soal.push(this.editedItem)
-      // this.close()
       const data = { ...this.editedItem }
       data.pertanyaans = this.lines
       data.pertanyaans.forEach((element, idx) => {
         data.pertanyaans[idx].matakuliah = data.kuliah
         if (data.pertanyaans[idx].creator === undefined) {
-          data.pertanyaans[idx].creator = this.$auth.user._id
+          data.pertanyaans[idx].creator = this.$auth.user.nomor
         }
       })
-      axios.post('http://localhost:8000/kuis', data).then((resp) => {
-        console.log(this.lines)
-      })
+      axios.post('http://localhost:8000/kuis', data).then((resp) => {})
     }
   }
 }
